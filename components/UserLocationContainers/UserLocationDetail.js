@@ -1,16 +1,12 @@
 import { useLayoutEffect } from "react";
 import { Button, View } from "react-native";
-import { useSavedWeatherLocations } from "../../data/SavedWeatherLocationsContext";
 import SinglePlaceDataContainer from "../DataContainers/SinglePlaceDataContainer";
+import { useUserLocation } from "../../data/UserLocationWeather";
 
-export default function SinglePlaceDetailSearch({ route, navigation }) {
+export default function UserLocationDetail({ route, navigation }) {
   const { data } = route.params;
 
-  const { weatherLocations, setWeatherLocations } = useSavedWeatherLocations();
-
-  const AddNewWeatherLocation = () => {
-    setWeatherLocations([...weatherLocations, data]);
-  };
+  const { setUserLocation } = useUserLocation();
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -22,21 +18,18 @@ export default function SinglePlaceDetailSearch({ route, navigation }) {
           }}
         />
       ),
-      headerRight: () => (
-        <Button
-          title="Dodaj"
-          onPress={() => {
-            AddNewWeatherLocation();
-            navigation.goBack();
-          }}
-        />
-      ),
     });
   }, [navigation]);
+
+  const deleteFromStorage = () => {
+    navigation.goBack();
+    setUserLocation(null);
+  };
 
   return (
     <View>
       <SinglePlaceDataContainer data={data} />
+      <Button title="delete from memory" onPress={deleteFromStorage} />
     </View>
   );
 }

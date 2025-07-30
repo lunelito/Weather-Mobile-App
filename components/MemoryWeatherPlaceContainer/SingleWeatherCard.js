@@ -1,21 +1,20 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useDeviceDataContext } from "../../data/DeviceDataContext";
 import { useNavigation } from "@react-navigation/native";
-import SingleWeatherCardData from "../DataContainers/SingleWeatherCardData";
+import SingleWeatherCardDataR from "../DataContainers/SingleWeatherContainers/SingleWeatherCardDataR";
+import SingleWeatherCardDataL from "../DataContainers/SingleWeatherContainers/SingleWeatherCardDataL";
 
-export default function SingleWeatherCard({ item }) {
+export default function SingleWeatherCard({ item, index }) {
   const { screenWidth, screenHeight } = useDeviceDataContext();
 
   const styles = StyleSheet.create({
-    container: {
+    containerR: {
       width: screenWidth * 0.9,
       height: screenHeight * 0.15,
-      padding: 16,
       marginVertical: 10,
-      backgroundColor: "black",
+      backgroundColor: "#f5f5f5",
       borderRadius: 12,
-      alignItems: "center",
-      justifyContent: "center",
+      flexDirection: "row",
       elevation: 4,
       shadowColor: "#000",
       shadowOffset: { width: 0, height: 2 },
@@ -23,6 +22,23 @@ export default function SingleWeatherCard({ item }) {
       shadowRadius: 4,
       borderTopLeftRadius: screenHeight * 0.15,
       borderBottomLeftRadius: screenHeight * 0.15,
+      marginRight: -40,
+    },
+    containerL: {
+      width: screenWidth * 0.9,
+      height: screenHeight * 0.15,
+      marginVertical: 10,
+      backgroundColor: "#f5f5f5",
+      borderRadius: 12,
+      flexDirection: "row",
+      elevation: 4,
+      shadowColor: "#000",
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.2,
+      shadowRadius: 4,
+      borderTopRightRadius: screenHeight * 0.15,
+      borderBottomRightRadius: screenHeight * 0.15,
+      marginLeft: -40,
     },
     pressed: {
       opacity: 0.75,
@@ -33,12 +49,27 @@ export default function SingleWeatherCard({ item }) {
 
   return (
     <Pressable
-      style={({ pressed }) => [styles.container, pressed && styles.pressed]}
+      style={({ pressed }) => [
+        index % 2 === 0 ? styles.containerR : styles.containerL,
+        pressed && styles.pressed,
+      ]}
       onPress={() =>
         navigation.navigate("SinglePlaceDetailMemory", { data: item })
       }
     >
-      <SingleWeatherCardData data={item} />
+      {index % 2 === 0 ? (
+        <SingleWeatherCardDataR
+          data={item}
+          screenHeight={screenHeight}
+          screenWidth={screenWidth}
+        />
+      ) : (
+        <SingleWeatherCardDataL
+          data={item}
+          screenHeight={screenHeight}
+          screenWidth={screenWidth}
+        />
+      )}
     </Pressable>
   );
 }

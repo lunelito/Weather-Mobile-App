@@ -11,6 +11,7 @@ export const useSavedWeatherLocations = () =>
 export const SavedWeatherLocationsProvider = ({ children }) => {
   const [weatherLocations, setWeatherLocations] = useState([]);
 
+
   useEffect(() => {
     const laodWeatherLocations = async () => {
       try {
@@ -38,12 +39,15 @@ export const SavedWeatherLocationsProvider = ({ children }) => {
         console.log(err);
       }
     };
-    saveWeatherLocations()
+    saveWeatherLocations();
   }, [weatherLocations]);
 
   return (
     <SavedWeatherLocationsContext.Provider
-      value={{ weatherLocations, setWeatherLocations }}
+      value={{
+        weatherLocations,
+        setWeatherLocations,
+      }}
     >
       {children}
     </SavedWeatherLocationsContext.Provider>

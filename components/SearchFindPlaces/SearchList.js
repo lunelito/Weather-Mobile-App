@@ -6,7 +6,6 @@ import {
   Pressable,
   View,
   ActivityIndicator,
-  Keyboard,
 } from "react-native";
 import useFetch from "../../hooks/useFetch";
 import { useState, useEffect } from "react";
@@ -19,7 +18,9 @@ export default function SearchList({
   setIsFocused,
 }) {
   const navigation = useNavigation();
+  
   const [debouncedQuery, setDebouncedQuery] = useState(query);
+
   const { weatherLocations } = useSavedWeatherLocations();
 
   useEffect(() => {
@@ -42,7 +43,7 @@ export default function SearchList({
     ? data.filter((city) => {
         const cityName = city.name ? city.name.toLowerCase() : "";
         const cityCountry = city.country ? city.country.toLowerCase() : "";
-
+        
         return !weatherLocations.some((saved) => {
           const savedName = saved.name ? saved.name.toLowerCase() : "";
           const savedCountry = saved.country ? saved.country.toLowerCase() : "";
