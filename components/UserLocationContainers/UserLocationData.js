@@ -89,7 +89,7 @@ export default function UserLocationData({
       resizeMode="cover"
       onLoad={() => setImageLoaded(true)}
     >
-      {isPending || (!imageLoaded && <SkeletonLoader screenHeight={screenHeight} />)}
+      {isPending || (!imageLoaded && <SkeletonLoader screenHeight={screenHeight} type={"C"} />)}
       {imageLoaded && !isPending && (
         <View style={styles.container}>
           <View style={styles.weatherIconContainer}>

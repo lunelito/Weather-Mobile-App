@@ -1,16 +1,13 @@
 import { StyleSheet, Text, View } from "react-native";
 
-export default function SkeletonLoader({ screenHeight }) {
+export default function SkeletonLoader({ screenHeight, type }) {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
       width: "100%",
-      flexDirection: "row",
       padding: 16,
       justifyContent: "space-between",
       alignItems: "center",
-      borderTopLeftRadius: screenHeight * 0.15,
-      borderBottomLeftRadius: screenHeight * 0.15,
       overflow: "hidden",
     },
     text: {
@@ -29,24 +26,54 @@ export default function SkeletonLoader({ screenHeight }) {
     },
     DataContainer: {
       gap: 10,
-      alignItems: "flex-end",
     },
     lodaingCirle: {
       height: 100,
       width: 100,
-      backgroundColor:"#d6d6d6",
+      backgroundColor: "#d6d6d6",
       borderRadius: 100,
     },
     laodingSquare: {
       backgroundColor: "#d6d6d6",
     },
   });
+
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        type === "C" && {
+          borderTopLeftRadius: screenHeight * 0.15,
+          borderBottomLeftRadius: screenHeight * 0.15,
+          borderTopRightRadius: screenHeight * 0.15,
+          borderBottomRightRadius: screenHeight * 0.15,
+          flexDirection: "row-reverse",
+          padding:36
+        },
+        type === "R"
+          ? {
+              borderTopLeftRadius: screenHeight * 0.15,
+              borderBottomLeftRadius: screenHeight * 0.15,
+              flexDirection: "row",
+            }
+          : {
+              borderTopRightRadius: screenHeight * 0.15,
+              borderBottomRightRadius: screenHeight * 0.15,
+              flexDirection: "row-reverse",
+            },
+      ]}
+    >
       <View style={styles.weatherIconContainer}>
         <View style={styles.lodaingCirle}></View>
       </View>
-      <View style={styles.DataContainer}>
+      <View
+        style={[
+          styles.DataContainer,
+          type === "R"
+            ? { alignItems: "flex-end" }
+            : { alignItems: "flex-start" },
+        ]}
+      >
         <View style={styles.laodingSquare}>
           <Text style={[styles.text, { fontSize: 26 }]}>----,----</Text>
         </View>

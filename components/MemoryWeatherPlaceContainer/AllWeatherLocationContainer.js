@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import SingleWeatherCard from "./SingleWeatherCard";
 import { useSavedWeatherLocations } from "../../data/SavedWeatherLocationsContext";
 import { useUserLocation } from "../../data/UserLocationWeather";
@@ -10,18 +10,18 @@ export default function AllWeatherLocationContainer() {
 
   return (
     <>
-      <View style={styles.contentContainer}>
-        {userLocation && <UserLocationCard item={userLocation} index={"loc"} />}
-      </View>
-      <FlatList
-        style={styles.container}
-        contentContainerStyle={styles.contentContainer}
-        data={weatherLocations}
-        renderItem={({ item, index }) => (
-          <SingleWeatherCard item={item} index={index} />
-        )}
-        keyExtractor={(item, index) => index}
-      />
+      <ScrollView>
+        <View style={styles.contentContainer}>
+          <View>
+            {userLocation && (
+              <UserLocationCard item={userLocation} index={"loc"} />
+            )}
+          </View>
+          {weatherLocations.map((item, index) => (
+            <SingleWeatherCard item={item} index={index} />
+          ))}
+        </View>
+      </ScrollView>
     </>
   );
 }

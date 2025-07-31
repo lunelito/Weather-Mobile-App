@@ -85,7 +85,7 @@ export default function SingleWeatherCardDataL({
       resizeMode="cover"
       onLoad={() => setImageLoaded(true)}
     >
-      {isPending || (!imageLoaded && <SkeletonLoader screenHeight={screenHeight} />)}
+      {isPending || (!imageLoaded && <SkeletonLoader screenHeight={screenHeight} type={"L"} />)}
       {imageLoaded && !isPending && (
         <View style={styles.container}>
           <View style={styles.weatherIconContainer}>

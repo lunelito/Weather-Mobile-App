@@ -1,4 +1,4 @@
-import { useLayoutEffect } from "react";
+import { useLayoutEffect, useEffect } from "react";
 import { Button, View } from "react-native";
 import { useSavedWeatherLocations } from "../../data/SavedWeatherLocationsContext";
 import SinglePlaceDataContainer from "../DataContainers/SinglePlaceDataContainer";
