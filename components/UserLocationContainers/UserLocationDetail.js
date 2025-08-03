@@ -13,6 +13,7 @@ export default function UserLocationDetail({ route, navigation }) {
       headerLeft: () => (
         <Button
           title="Anuluj"
+          color={"white"}
           onPress={() => {
             navigation.goBack();
           }}
@@ -27,9 +28,8 @@ export default function UserLocationDetail({ route, navigation }) {
   };
 
   return (
-    <View>
-      <SinglePlaceDataContainer data={data} />
-      <Button title="delete from memory" onPress={deleteFromStorage} />
+    <View style={{ flex: 1 }}>
+      <SinglePlaceDataContainer data={data} deleteFromStorage={deleteFromStorage}/>
     </View>
   );
 }

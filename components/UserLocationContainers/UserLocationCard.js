@@ -10,16 +10,11 @@ export default function UserLocationCard({ item }) {
     container: {
       width: screenWidth * 0.9,
       height: screenHeight * 0.15,
-      marginBottom:50,
-      backgroundColor: "#f5f5f5",
+      marginBottom: 50,
+      backgroundColor: "#292929",
       borderRadius: 12,
       flexDirection: "row",
       width: "90%",
-      elevation: 4,
-      shadowColor: "#000",
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.2,
-      shadowRadius: 4,
       borderTopLeftRadius: screenHeight * 0.15,
       borderBottomLeftRadius: screenHeight * 0.15,
       borderTopRightRadius: screenHeight * 0.15,
@@ -35,9 +30,7 @@ export default function UserLocationCard({ item }) {
   return (
     <Pressable
       style={({ pressed }) => [styles.container, pressed && styles.pressed]}
-      onPress={() =>
-        navigation.navigate("UserLocationDetail", { data: item })
-      }
+      onPress={() => navigation.navigate("UserLocationDetail", { data: item })}
     >
       <UserLocationData
         data={item}

@@ -8,6 +8,7 @@ export default function SkeletonLoader({ screenHeight, type }) {
       padding: 16,
       justifyContent: "space-between",
       alignItems: "center",
+      backgroundColor: "#292929",
       overflow: "hidden",
     },
     text: {
@@ -30,11 +31,11 @@ export default function SkeletonLoader({ screenHeight, type }) {
     lodaingCirle: {
       height: 100,
       width: 100,
-      backgroundColor: "#d6d6d6",
+      backgroundColor: "#4d4d4d",
       borderRadius: 100,
     },
     laodingSquare: {
-      backgroundColor: "#d6d6d6",
+      backgroundColor: "#4d4d4d",
     },
   });
 

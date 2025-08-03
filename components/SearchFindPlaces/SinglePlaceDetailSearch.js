@@ -17,6 +17,7 @@ export default function SinglePlaceDetailSearch({ route, navigation }) {
       headerLeft: () => (
         <Button
           title="Anuluj"
+          color={"#ffffff"}
           onPress={() => {
             navigation.goBack();
           }}
@@ -25,6 +26,7 @@ export default function SinglePlaceDetailSearch({ route, navigation }) {
       headerRight: () => (
         <Button
           title="Dodaj"
+          color={"#ffffff"}
           onPress={() => {
             AddNewWeatherLocation();
             navigation.goBack();
@@ -35,7 +37,7 @@ export default function SinglePlaceDetailSearch({ route, navigation }) {
   }, [navigation]);
 
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <SinglePlaceDataContainer data={data} />
     </View>
   );

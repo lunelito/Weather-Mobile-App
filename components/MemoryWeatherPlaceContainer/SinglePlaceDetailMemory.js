@@ -13,11 +13,12 @@ export default function SinglePlaceDetailMemory({ route, navigation }) {
       headerLeft: () => (
         <Button
           title="Anuluj"
+          color={"#ffffff"}
           onPress={() => {
             navigation.goBack();
           }}
         />
-      ),
+      )
     });
   }, [navigation]);
 
@@ -30,9 +31,8 @@ export default function SinglePlaceDetailMemory({ route, navigation }) {
   };
 
   return (
-    <View>
-      <SinglePlaceDataContainer data={data} />
-      <Button title="delete from memory" onPress={deleteFromStorage} />
+    <View style={{ flex: 1 }}>
+      <SinglePlaceDataContainer data={data} deleteFromStorage={deleteFromStorage}/>
     </View>
   );
 }

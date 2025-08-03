@@ -1,9 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import {
-  SafeAreaView,
-  StyleSheet,
-  View,
-} from "react-native";
+import { SafeAreaView, StyleSheet, View } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 
@@ -20,7 +16,7 @@ export default function App() {
   const Stack = createNativeStackNavigator();
   return (
     <View style={styles.container}>
-      <StatusBar style="auto" />
+      <StatusBar style="light" />
       <SafeAreaView style={{ flex: 1 }}>
         {/* contexts */}
         <SavedWeatherLocationsProvider>
@@ -50,6 +46,7 @@ export default function App() {
                     options={{
                       presentation: "fullScreenModal",
                       contentStyle: { backgroundColor: "white" },
+                      headerTransparent: true
                     }}
                   />
                   <Stack.Screen
@@ -73,6 +70,6 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#121212",
   },
 });

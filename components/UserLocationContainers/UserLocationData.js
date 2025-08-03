@@ -4,13 +4,15 @@ import useFetch from "../../hooks/useFetch";
 import SkeletonLoader from "../UI/SkeletonLoader";
 import WeatherIcon from "../UI/WeatherIcon";
 
-export default function UserLocationData({
-  data,
-  screenHeight,
-}) {
+export default function UserLocationData({ data, screenHeight }) {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
+      shadowColor: "#ffffff",
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.14,
+      shadowRadius: 6,
+      elevation: 6,
       width: "100%",
       flexDirection: "row-reverse",
       padding: 36,
@@ -89,7 +91,10 @@ export default function UserLocationData({
       resizeMode="cover"
       onLoad={() => setImageLoaded(true)}
     >
-      {isPending || (!imageLoaded && <SkeletonLoader screenHeight={screenHeight} type={"C"} />)}
+      {isPending ||
+        (!imageLoaded && (
+          <SkeletonLoader screenHeight={screenHeight} type={"C"} />
+        ))}
       {imageLoaded && !isPending && (
         <View style={styles.container}>
           <View style={styles.weatherIconContainer}>

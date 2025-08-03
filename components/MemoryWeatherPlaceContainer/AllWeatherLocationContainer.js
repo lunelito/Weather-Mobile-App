@@ -18,7 +18,7 @@ export default function AllWeatherLocationContainer() {
             )}
           </View>
           {weatherLocations.map((item, index) => (
-            <SingleWeatherCard item={item} index={index} />
+            <SingleWeatherCard item={item} index={index} key={index} />
           ))}
         </View>
       </ScrollView>

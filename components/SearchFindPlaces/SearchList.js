@@ -95,16 +95,17 @@ export default function SearchList({
 
 const styles = StyleSheet.create({
   resultItem: {
-    padding: 12,
+    padding: 22,
     borderBottomWidth: 1,
     borderBottomColor: "#ccc",
-    backgroundColor: "white",
+    backgroundColor: "#121212",
   },
   pressed: {
-    backgroundColor: "#f0f0f0",
+    backgroundColor: "#2C2C2C",
   },
   cityText: {
     fontSize: 16,
+    color:"#E0E0E0"
   },
   messageContainer: {
     padding: 20,

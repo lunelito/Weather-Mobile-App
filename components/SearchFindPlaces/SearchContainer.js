@@ -13,7 +13,7 @@ export default function SearchContainer({
         {isFocused && (
           <View style={styles.iconContainer}>
             <IconButton
-              color="black"
+              color="white"
               icon="arrow-back-outline"
               size={28}
               onPress={() => {
@@ -24,6 +24,8 @@ export default function SearchContainer({
           </View>
         )}
         <TextInput
+          placeholderTextColor={"#A0A0A0"}
+          keyboardAppearance="dark"
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
           style={styles.input}
@@ -47,9 +49,10 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    borderWidth: 2,
-    borderColor: "black",
+    borderWidth: 1,
+    borderColor: "white",
     padding: 10,
+    color:"#A0A0A0",
     borderRadius: 10,
     marginBottom: 12,
   },

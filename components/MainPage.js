@@ -49,7 +49,6 @@ export default function MainPage() {
             />
           ) : (
             <View style={styles.infoContainer}>
-              <Text>szukaj czegos</Text>
               {!userLocation && (
                 <Button
                   title="grant permission"
@@ -74,6 +73,7 @@ export default function MainPage() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor:"#121212"
   },
   searchContainer: {
     flex: 1,
