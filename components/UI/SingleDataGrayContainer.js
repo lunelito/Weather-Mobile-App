@@ -29,19 +29,19 @@ const styles = StyleSheet.create({
   },
   text: {
     color: "white",
-    fontSize: 18,
+    fontSize: 16,
     marginHorizontal: 8
   },
    row: {
     flexDirection: "row",
     alignItems: "center",
   },
+  content:{
+    flex:1
+  },
   line: {
     flex: 1,
     height: 1,
     backgroundColor: "#ffffff",
-  },
-  content: {
-    margin: 10,
-  },
+  }
 });

@@ -11,6 +11,7 @@ import SinglePlaceDetailSearch from "./components/SearchFindPlaces/SinglePlaceDe
 import SinglePlaceDetailMemory from "./components/MemoryWeatherPlaceContainer/SinglePlaceDetailMemory";
 import UserLocationDetail from "./components/UserLocationContainers/UserLocationDetail";
 import MainPage from "./components/MainPage";
+import DetailForcastList from "./components/HourlyForecast/DetailForcastList";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -30,7 +31,6 @@ export default function App() {
                     name="MainPage"
                     options={{
                       headerShown: false,
-                      contentStyle: { backgroundColor: "white" },
                     }}
                   />
                   <Stack.Screen
@@ -45,7 +45,6 @@ export default function App() {
                     name="SinglePlaceDetailMemory"
                     options={{
                       presentation: "fullScreenModal",
-                      contentStyle: { backgroundColor: "white" },
                       headerTransparent: true
                     }}
                   />
@@ -54,7 +53,13 @@ export default function App() {
                     name="UserLocationDetail"
                     options={{
                       presentation: "fullScreenModal",
-                      contentStyle: { backgroundColor: "white" },
+                    }}
+                  />
+                  <Stack.Screen
+                    component={DetailForcastList}
+                    name="DetailForcastList"
+                    options={{
+                      presentation: "modal",
                     }}
                   />
                 </Stack.Navigator>
