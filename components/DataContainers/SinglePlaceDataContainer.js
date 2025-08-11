@@ -13,6 +13,7 @@ import SkeletonCard from "../UI/SkeletonLoader";
 import { useNavigation } from "@react-navigation/native";
 import SingleDataGrayContainer from "../UI/SingleDataGrayContainer";
 import ForecastList from "../HourlyForecast/ForecastList";
+import AirPolution from "../AirPolution/AirPolutionList";
 
 export default function SinglePlaceDataContainer({ data, deleteFromStorage }) {
   const { lat, lon } = data;
@@ -91,7 +92,9 @@ export default function SinglePlaceDataContainer({ data, deleteFromStorage }) {
               <SingleDataGrayContainer x={2} y={2} title={"Hourly forecast"}>
                 <ForecastList data={data}/>
               </SingleDataGrayContainer>
-              <SingleDataGrayContainer x={2} y={1} />
+              <SingleDataGrayContainer x={2} y={2} title={"Air Polution"}>
+                <AirPolution data={data}/>
+              </SingleDataGrayContainer>
               <SingleDataGrayContainer x={1} y={1} />
               <SingleDataGrayContainer x={1} y={1} />
               <SingleDataGrayContainer x={1} y={1} />

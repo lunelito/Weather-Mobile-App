@@ -1,9 +1,17 @@
 import React from "react";
 import useFetch from "../../hooks/useFetch";
 import { useState } from "react";
-import { Button, FlatList, ScrollView, StyleSheet, View } from "react-native";
+import {
+  Button,
+  FlatList,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import SingleForcastHour from "./SingleForcastHour";
 import { useNavigation } from "@react-navigation/native";
+import SkeletonLoader from "./SkeletonLoader";
 
 export default function ForecastList({ data }) {
   const { lat, lon } = data;
@@ -25,29 +33,40 @@ export default function ForecastList({ data }) {
     HourlyForecastData &&
     HourlyForecastData.list.filter((item) => item.dt < today + oneDay);
 
+  if (error) {
+    return (
+      <View>
+        <Text>Error: {error}</Text>
+      </View>
+    );
+  }
+
   return (
     <>
-      <FlatList
-        contentContainerStyle={styles.container}
-        data={HourlyForecastData && dataOneday}
-        renderItem={({ item }) => <SingleForcastHour item={item} />}
-        keyExtractor={(item, index) => index.toString()}
-        horizontal={true}
-        showsHorizontalScrollIndicator={false}
-      />
+      {isPending ? (
+        <ScrollView  horizontal={true}>
+          {Array.from({ length: 20 }).map((_, i) => (
+            <SkeletonLoader key={i} />
+          ))}
+        </ScrollView>
+      ) : (
+        <FlatList
+          data={dataOneday}
+          renderItem={({ item }) => <SingleForcastHour item={item} />}
+          keyExtractor={(item, index) => index.toString()}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+        />
+      )}
       <Button
         title="see more of hourly Forcast"
         color={"white"}
-        onPress={() =>navigation.navigate("DetailForcastList", {
-          HourlyForecastData: HourlyForecastData,
-        })}
+        onPress={() =>
+          navigation.navigate("DetailForcastList", {
+            HourlyForecastData: HourlyForecastData,
+          })
+        }
       />
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    margin: 10,
-  },
-});

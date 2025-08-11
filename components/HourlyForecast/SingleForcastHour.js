@@ -14,10 +14,7 @@ export default function SingleForcastHour({ item }) {
   return (
     <View style={styles.container}>
       <View style={styles.textContainer}>
-        <Text style={[styles.text, { fontSize: 20 }]}>
-          {SingleForcastHourDataF.day}
-        </Text>
-        <Text style={[styles.text, { fontSize: 17 }]}>
+        <Text style={[styles.text, { fontSize: 22 }]}>
           {SingleForcastHourDataF.time}
         </Text>
         <Text style={[styles.text, { fontSize: 14 }]}>
@@ -50,7 +47,7 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     alignItems: "center",
-    gap: 10,
+    gap: 20,
   },
   text: {
     color: "white",
