@@ -11,7 +11,7 @@ import SinglePlaceDetailSearch from "./components/SearchFindPlaces/SinglePlaceDe
 import SinglePlaceDetailMemory from "./components/MemoryWeatherPlaceContainer/SinglePlaceDetailMemory";
 import UserLocationDetail from "./components/UserLocationContainers/UserLocationDetail";
 import MainPage from "./components/MainPage";
-import DetailForcastList from "./components/HourlyForecast/DetailForcastList";
+import DetailForcastList from "./components/ContentContainers/HourlyForecast/DetailForcastList";
 
 export default function App() {
   const Stack = createNativeStackNavigator();

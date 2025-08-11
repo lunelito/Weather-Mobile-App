@@ -12,8 +12,10 @@ import { useLayoutEffect, useState } from "react";
 import SkeletonCard from "../UI/SkeletonLoader";
 import { useNavigation } from "@react-navigation/native";
 import SingleDataGrayContainer from "../UI/SingleDataGrayContainer";
-import ForecastList from "../HourlyForecast/ForecastList";
-import AirPolution from "../AirPolution/AirPolutionList";
+import ForecastList from "../ContentContainers/HourlyForecast/ForecastList";
+import AirPolution from "../ContentContainers/AirPolution/AirPolutionList";
+import HumidityContainer from "../ContentContainers/Humidity/HumidityContainer";
+import VisibilityContainer from "../ContentContainers/Visibility/VisibilityContainer";
 
 export default function SinglePlaceDataContainer({ data, deleteFromStorage }) {
   const { lat, lon } = data;
@@ -89,17 +91,26 @@ export default function SinglePlaceDataContainer({ data, deleteFromStorage }) {
             ))}
           {imageLoaded && !isPending && (
             <>
+              <SingleDataGrayContainer x={1} y={1} title={"Humidity"}>
+                <HumidityContainer data={weatherData} />
+              </SingleDataGrayContainer>
+              <SingleDataGrayContainer x={1} y={1} title={"Visibility"}>
+                <VisibilityContainer data={weatherData} />
+              </SingleDataGrayContainer>
               <SingleDataGrayContainer x={2} y={2} title={"Hourly forecast"}>
-                <ForecastList data={data}/>
+                <ForecastList data={data} />
               </SingleDataGrayContainer>
               <SingleDataGrayContainer x={2} y={2} title={"Air Polution"}>
-                <AirPolution data={data}/>
+                <AirPolution data={data} />
               </SingleDataGrayContainer>
               <SingleDataGrayContainer x={1} y={1} />
               <SingleDataGrayContainer x={1} y={1} />
               <SingleDataGrayContainer x={1} y={1} />
-              <SingleDataGrayContainer x={1} y={1} />
-              <Button title="delete from memory" onPress={deleteFromStorage} color={"white"} />
+              <Button
+                title="delete from memory"
+                onPress={deleteFromStorage}
+                color={"white"}
+              />
             </>
           )}
         </View>

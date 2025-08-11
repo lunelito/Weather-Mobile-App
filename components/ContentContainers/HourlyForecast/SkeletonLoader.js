@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import WeatherIcon from "../UI/WeatherIcon";
+import WeatherIcon from "../../UI/WeatherIcon";
 
 export default function SkeletonLoader() {
   return (
