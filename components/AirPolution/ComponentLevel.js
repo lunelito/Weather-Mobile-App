@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet } from "react-native";
 
-export default function ComponentLevel({ component, value, children }) {
+export default function ComponentLevel({ component, value, children, style }) {
   const COMPONENT_LEVELS = {
     pm2_5: [
       { max: 10, label: "Very Good", color: "green" },
@@ -63,9 +63,13 @@ export default function ComponentLevel({ component, value, children }) {
   const level = getComponentLevel(component, value);
 
   return (
-    <View style={styles.container}>
-      <Text style={[styles.level, { color: level.color }]}>{children}</Text>
-      <Text style={[styles.level, { color: level.color }]}>{value} μg/m³</Text>
+    <View style={[styles.container, style && style[0]]}>
+      <Text style={[styles.level, { color: level.color }, style && style[1]]}>
+        {children}
+      </Text>
+      <Text style={[styles.level, { color: level.color }, style && style[1]]}>
+        {value} μg/m³
+      </Text>
     </View>
   );
 }

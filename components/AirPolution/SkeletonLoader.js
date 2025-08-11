@@ -16,11 +16,11 @@ export default function SkeletonLoader() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={[styles.aqiText,]}>
+        <Text style={[styles.aqiText, styles.laodingSquare,styles.text]}>
           ................
         </Text>
       </View>
-      <View>
+      <View style={styles.components}>
         {[
           { key: "co", label: "Carbon monoxide" },
           { key: "no", label: "Nitric oxide" },
@@ -35,6 +35,7 @@ export default function SkeletonLoader() {
             key={key}
             value={components[key]}
             component={key}
+            style={[styles.laodingSquare, styles.text]}
           >
             {label + ` (${key.toUpperCase()})`}
           </ComponentLevel>
@@ -62,8 +63,14 @@ const styles = StyleSheet.create({
   },
   laodingSquare: {
     backgroundColor: "#4d4d4d",
+    borderRadius:5,
+    margin:1,
+    height:20
   },
   text: {
     color: "transparent",
   },
+  components:{
+    gap:5
+  }
 });
