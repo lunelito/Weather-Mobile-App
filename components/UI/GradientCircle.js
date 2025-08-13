@@ -3,15 +3,17 @@ import { StyleSheet, View } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
 
 
-export default function GradientCircle() {
+export default function GradientCircle({children}) {
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={["white", "rgba(0, 0, 0,0.1)"]}
-        start={{ x: 0.4, y: 0 }}   
+        colors={["white", "rgba(0, 0, 0,0.3)"]}
+        start={{ x: 0.5, y: 0 }}   
         end={{ x: 0.5, y: 1 }}     
         style={styles.circle}
-      />
+      >
+        {children}
+      </LinearGradient>
     </View>
   );
 }
@@ -26,5 +28,7 @@ const styles = StyleSheet.create({
     width: 90,
     height: 90,
     borderRadius: 50,  
+    alignItems:"center",
+    justifyContent:"center"
   },
 });

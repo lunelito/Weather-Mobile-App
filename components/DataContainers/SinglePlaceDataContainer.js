@@ -16,6 +16,7 @@ import ForecastList from "../ContentContainers/HourlyForecast/ForecastList";
 import AirPolution from "../ContentContainers/AirPolution/AirPolutionList";
 import HumidityContainer from "../ContentContainers/Humidity/HumidityContainer";
 import VisibilityContainer from "../ContentContainers/Visibility/VisibilityContainer";
+import WindContainer from "../ContentContainers/Wind/WindContainer";
 
 export default function SinglePlaceDataContainer({ data, deleteFromStorage }) {
   const { lat, lon } = data;
@@ -91,6 +92,9 @@ export default function SinglePlaceDataContainer({ data, deleteFromStorage }) {
             ))}
           {imageLoaded && !isPending && (
             <>
+              <SingleDataGrayContainer x={2} y={1} title={"Wind"}>
+                <WindContainer data={weatherData} />
+              </SingleDataGrayContainer>
               <SingleDataGrayContainer x={1} y={1} title={"Humidity"}>
                 <HumidityContainer data={weatherData} />
               </SingleDataGrayContainer>
@@ -103,9 +107,6 @@ export default function SinglePlaceDataContainer({ data, deleteFromStorage }) {
               <SingleDataGrayContainer x={2} y={2} title={"Air Polution"}>
                 <AirPolution data={data} />
               </SingleDataGrayContainer>
-              <SingleDataGrayContainer x={1} y={1} />
-              <SingleDataGrayContainer x={1} y={1} />
-              <SingleDataGrayContainer x={1} y={1} />
               <Button
                 title="delete from memory"
                 onPress={deleteFromStorage}
@@ -128,7 +129,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginVertical: 120,
-    margin: 20,
     flexWrap: "wrap",
     flexDirection: "row",
     justifyContent: "center",

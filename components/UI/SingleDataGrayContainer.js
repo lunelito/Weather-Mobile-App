@@ -4,7 +4,7 @@ import { useDeviceDataContext } from "../../data/DeviceDataContext";
 export default function SingleDataGrayContainer({ x, y, title, children }) {
   const { screenWidth } = useDeviceDataContext();
 
-  const boxSize = screenWidth * 0.5 - (x % 2 === 0 ? 30 : 40);
+  const boxSize = screenWidth * 0.5 - (x % 2 === 0 ? 20 : 25);
 
   return (
     <View
@@ -22,10 +22,10 @@ export default function SingleDataGrayContainer({ x, y, title, children }) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "rgba(0,0,0,0.9)",
-    padding: 20,
+    backgroundColor: "rgba(0,0,0,0.8)",
+    padding: 15,
     borderRadius: 8,
-    margin: 10,
+    margin: 5,
   },
   text: {
     color: "white",
