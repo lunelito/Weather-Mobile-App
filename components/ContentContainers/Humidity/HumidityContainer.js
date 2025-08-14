@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { View } from "react-native";
+import { useEffect, useState } from "react";
 import DoubleCircleContainer from "../../UI/DoubleCircleContainer";
 
 export default function HumidityContainer({ data }) {

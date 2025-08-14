@@ -2,12 +2,7 @@ import { StyleSheet, View, Text } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 
 export default function WindContainer({ data }) {
-  console.log(data.wind.deg);
-  // "wind": {
-  //   "speed": 4.09, // prędkość wiatru (m/s)
-  //   "deg": 121,    // kierunek w stopniach (0° = północ, 90° = wschód)
-  //   "gust": 3.47   // porywy wiatru (m/s)
-  // }
+
   return (
     <View style={styles.container}>
       <View style={styles.dataContainer}>

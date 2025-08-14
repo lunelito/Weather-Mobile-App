@@ -17,6 +17,9 @@ import AirPolution from "../ContentContainers/AirPolution/AirPolutionList";
 import HumidityContainer from "../ContentContainers/Humidity/HumidityContainer";
 import VisibilityContainer from "../ContentContainers/Visibility/VisibilityContainer";
 import WindContainer from "../ContentContainers/Wind/WindContainer";
+import SunRAndSContainer from "../ContentContainers/SunRise&SunSet/SunRAndSContainer";
+import SeaLevel from "../ContentContainers/SeaLevel/SeaLevel";
+import PressureContainer from "../ContentContainers/Pressure/PressureContainer";
 
 export default function SinglePlaceDataContainer({ data, deleteFromStorage }) {
   const { lat, lon } = data;
@@ -92,6 +95,15 @@ export default function SinglePlaceDataContainer({ data, deleteFromStorage }) {
             ))}
           {imageLoaded && !isPending && (
             <>
+              <SingleDataGrayContainer x={1} y={1} title={"Pressure"}>
+                <PressureContainer data={weatherData}/>
+              </SingleDataGrayContainer>
+              <SingleDataGrayContainer x={1} y={1} title={"Sea level"}>
+                <SeaLevel data={weatherData}/>
+              </SingleDataGrayContainer>
+              <SingleDataGrayContainer x={2} y={1} title={"Sun"}>
+                <SunRAndSContainer data={weatherData} />
+              </SingleDataGrayContainer>
               <SingleDataGrayContainer x={2} y={1} title={"Wind"}>
                 <WindContainer data={weatherData} />
               </SingleDataGrayContainer>
