@@ -54,7 +54,7 @@ export default function AirPolution({ data }) {
             </Text>
           </View>
           {AirPolutionData && (
-            <View>
+            <View style={styles.infos}>
               {[
                 { key: "co", label: "Carbon monoxide" },
                 { key: "no", label: "Nitric oxide" },
@@ -91,10 +91,15 @@ const styles = StyleSheet.create({
   header: {
     height: "20%",
     justifyContent: "center",
+    alignItems:"center",
   },
   aqiText: {
     textAlign: "center",
     fontWeight: "700",
     paddingVertical: "auto",
   },
+  infos:{
+    height: "80%",
+    gap:5
+  }
 });

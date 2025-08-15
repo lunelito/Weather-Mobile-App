@@ -20,6 +20,7 @@ import WindContainer from "../ContentContainers/Wind/WindContainer";
 import SunRAndSContainer from "../ContentContainers/SunRise&SunSet/SunRAndSContainer";
 import SeaLevel from "../ContentContainers/SeaLevel/SeaLevel";
 import PressureContainer from "../ContentContainers/Pressure/PressureContainer";
+import UVContainer from "../ContentContainers/UVindex/UVContainer";
 
 export default function SinglePlaceDataContainer({ data, deleteFromStorage }) {
   const { lat, lon } = data;
@@ -95,17 +96,26 @@ export default function SinglePlaceDataContainer({ data, deleteFromStorage }) {
             ))}
           {imageLoaded && !isPending && (
             <>
-              <SingleDataGrayContainer x={1} y={1} title={"Pressure"}>
-                <PressureContainer data={weatherData}/>
-              </SingleDataGrayContainer>
-              <SingleDataGrayContainer x={1} y={1} title={"Sea level"}>
-                <SeaLevel data={weatherData}/>
+              <SingleDataGrayContainer x={2} y={2} title={"Hourly forecast"}>
+                <ForecastList data={data} />
               </SingleDataGrayContainer>
               <SingleDataGrayContainer x={2} y={1} title={"Sun"}>
                 <SunRAndSContainer data={weatherData} />
               </SingleDataGrayContainer>
+              <SingleDataGrayContainer x={2} y={1} title={"UV index"}>
+                <UVContainer data={data} />
+              </SingleDataGrayContainer>
+              <SingleDataGrayContainer x={1} y={1} title={"Pressure"}>
+                <PressureContainer data={weatherData} />
+              </SingleDataGrayContainer>
+              <SingleDataGrayContainer x={1} y={1} title={"Sea level"}>
+                <SeaLevel data={weatherData} />
+              </SingleDataGrayContainer>
               <SingleDataGrayContainer x={2} y={1} title={"Wind"}>
                 <WindContainer data={weatherData} />
+              </SingleDataGrayContainer>
+              <SingleDataGrayContainer x={2} y={2} title={"Air Polution"}>
+                <AirPolution data={data} />
               </SingleDataGrayContainer>
               <SingleDataGrayContainer x={1} y={1} title={"Humidity"}>
                 <HumidityContainer data={weatherData} />
@@ -113,17 +123,13 @@ export default function SinglePlaceDataContainer({ data, deleteFromStorage }) {
               <SingleDataGrayContainer x={1} y={1} title={"Visibility"}>
                 <VisibilityContainer data={weatherData} />
               </SingleDataGrayContainer>
-              <SingleDataGrayContainer x={2} y={2} title={"Hourly forecast"}>
-                <ForecastList data={data} />
-              </SingleDataGrayContainer>
-              <SingleDataGrayContainer x={2} y={2} title={"Air Polution"}>
-                <AirPolution data={data} />
-              </SingleDataGrayContainer>
-              <Button
-                title="delete from memory"
-                onPress={deleteFromStorage}
-                color={"white"}
-              />
+              <View style={{ margin: 60 }}>
+                <Button
+                  title="delete from memory"
+                  onPress={deleteFromStorage}
+                  color="white"
+                />
+              </View>
             </>
           )}
         </View>
@@ -140,9 +146,9 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    marginVertical: 120,
+    marginTop: 120,
     flexWrap: "wrap",
     flexDirection: "row",
     justifyContent: "center",
-  },
+  }
 });

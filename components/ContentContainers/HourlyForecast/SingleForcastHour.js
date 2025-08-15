@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   container: {
     height: "100%",
     width: 70,
-    marginRight: 8,
+    marginRight: 9,
     justifyContent: "center",
     gap: 20,
     alignItems: "center",

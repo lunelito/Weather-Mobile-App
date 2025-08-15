@@ -20,7 +20,7 @@ export default function PressureContainer({ data }) {
     return () => clearInterval();
   }, [P, Pressure]);
 
-  // Ustawienia skali
+
   const minPressure = 980;
   const maxPressure = 1050;
   const normalPressure = 1013;
@@ -29,7 +29,6 @@ export default function PressureContainer({ data }) {
   const radius = size / 2 - 10;
   const center = size / 2;
 
-  // Obliczenia
   const range = maxPressure - minPressure;
   const clampedPressure = Math.max(
     Math.min(Pressure, maxPressure),
