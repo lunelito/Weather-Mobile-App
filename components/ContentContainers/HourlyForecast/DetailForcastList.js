@@ -8,18 +8,21 @@ import {
   ScrollView,
 } from "react-native";
 import SingleForcastHour from "./SingleForcastHour";
+import { useSettingsDataContext } from "../../../data/SettingsContext";
 
 export default function DetailForcastList({ route, navigation }) {
   const HourlyForecastData = route.params.HourlyForecastData;
 
+  const { themeColors } = useSettingsDataContext();
+
   useLayoutEffect(() => {
     navigation.setOptions({
       title: "Hourly Forecast",
-      headerStyle: { backgroundColor: "#121212" },
-      contentStyle: { backgroundColor: "#222" },
-      headerTintColor: "#fff",
+      headerStyle: { backgroundColor: themeColors.backgroundColor },
+      contentStyle: { backgroundColor: themeColors.secondaryBackgroundColor },
+      headerTintColor: themeColors.textColor,
     });
-  }, [navigation]);
+  }, [navigation, themeColors]);
 
   const groupForecastByDay = (forecastList) => {
     return forecastList.reduce((acc, item) => {
@@ -53,8 +56,12 @@ export default function DetailForcastList({ route, navigation }) {
           return (
             <View key={date} style={{ marginVertical: 10, flex: 1 }}>
               <View style={styles.textContainer}>
-                <Text style={styles.text}>{dayName}</Text>
-                <Text style={styles.text}>{date}</Text>
+                <Text style={[styles.text, { color: themeColors.textColor }]}>
+                  {dayName}
+                </Text>
+                <Text style={[styles.text, { color: themeColors.textColor }]}>
+                  {date}
+                </Text>
               </View>
               <FlatList
                 data={hours}

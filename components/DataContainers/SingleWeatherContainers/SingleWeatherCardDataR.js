@@ -3,6 +3,7 @@ import { useState } from "react";
 import useFetch from "../../../hooks/useFetch";
 import SkeletonLoader from "../../UI/SkeletonLoader";
 import WeatherIcon from "../../UI/WeatherIcon";
+import { useSettingsDataContext } from "../../../data/SettingsContext";
 
 export default function SingleWeatherCardDataR({ data, screenHeight }) {
   const styles = StyleSheet.create({
@@ -47,8 +48,10 @@ export default function SingleWeatherCardDataR({ data, screenHeight }) {
   });
 
   const { lat, lon } = data;
+  
+  const {units} = useSettingsDataContext()
 
-  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=4b697ed7a09995dacb97f44eb9978af3&units=metric`;
+  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=4b697ed7a09995dacb97f44eb9978af3&units=${units}`;
 
   const { data: weatherData, isPending, error } = useFetch(url);
 

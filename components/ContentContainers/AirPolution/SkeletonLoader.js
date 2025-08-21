@@ -1,8 +1,10 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import ComponentLevel from "./ComponentLevel";
+import { useSettingsDataContext } from "../../../data/SettingsContext";
 
 export default function SkeletonLoader() {
+  const { themeColors } = useSettingsDataContext();
   const components = {
     co: 203.609,
     no: 0.0,
@@ -16,7 +18,14 @@ export default function SkeletonLoader() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={[styles.aqiText, styles.laodingSquare,styles.text]}>
+        <Text
+          style={[
+            styles.aqiText,
+            styles.laodingSquare,
+            { backgroundColor: themeColors.SkeletonLoaderText },
+            styles.text,
+          ]}
+        >
           ................
         </Text>
       </View>
@@ -35,7 +44,11 @@ export default function SkeletonLoader() {
             key={key}
             value={components[key]}
             component={key}
-            style={[styles.laodingSquare, styles.text]}
+            style={[
+              styles.laodingSquare,
+              styles.text,
+              { backgroundColor: themeColors.SkeletonLoaderText },
+            ]}
           >
             {label + ` (${key.toUpperCase()})`}
           </ComponentLevel>
@@ -62,15 +75,14 @@ const styles = StyleSheet.create({
     letterSpacing: 2,
   },
   laodingSquare: {
-    backgroundColor: "#4d4d4d",
-    borderRadius:5,
-    margin:1,
-    height:20
+    borderRadius: 5,
+    margin: 1,
+    height: 20,
   },
   text: {
     color: "transparent",
   },
-  components:{
-    gap:5
-  }
+  components: {
+    gap: 5,
+  },
 });

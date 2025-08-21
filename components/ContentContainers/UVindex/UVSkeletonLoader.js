@@ -1,12 +1,18 @@
-import React from "react";
-import useFetch from "../../../hooks/useFetch";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { useSettingsDataContext } from "../../../data/SettingsContext";
 
-export default function UVSkeletonLoader({ data }) {
+export default function UVSkeletonLoader() {
+  const { themeColors } = useSettingsDataContext();
+
   return (
     <View style={styles.container}>
       <View style={styles.singleCircleContainer}>
-        <View style={[styles.circle]}>
+        <View
+          style={[
+            styles.circle,
+            { backgroundColor: themeColors.SkeletonLoaderText },
+          ]}
+        >
           <View>
             <Text style={styles.num}></Text>
           </View>
@@ -19,16 +25,28 @@ export default function UVSkeletonLoader({ data }) {
         contentContainerStyle={{ alignItems: "center" }}
         showsHorizontalScrollIndicator={false}
       >
-        {Array(6).fill(0).map((_, i) => (
-
-        
-          <View style={styles.singleLittleCircleContainer}>
-            <Text style={styles.dayText}>.........</Text>
-            <View style={[styles.littleCircle]}>
-              <Text style={styles.num}></Text>
+        {Array(6)
+          .fill(0)
+          .map((_, i) => (
+            <View style={styles.singleLittleCircleContainer}>
+              <Text
+                style={[
+                  styles.dayText,
+                  { backgroundColor: themeColors.SkeletonLoaderText },
+                ]}
+              >
+                .........
+              </Text>
+              <View
+                style={[
+                  styles.littleCircle,
+                  { backgroundColor: themeColors.SkeletonLoaderText },
+                ]}
+              >
+                <Text style={styles.num}></Text>
+              </View>
             </View>
-          </View>
-        ))}
+          ))}
       </ScrollView>
     </View>
   );
@@ -48,7 +66,6 @@ const styles = StyleSheet.create({
   circle: {
     height: 110,
     width: 110,
-    backgroundColor: "#4d4d4d",
     borderRadius: 55,
     justifyContent: "center",
     alignItems: "center",
@@ -67,11 +84,9 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#4d4d4d",
   },
   dayText: {
     color: "transparent",
-    backgroundColor: "#4d4d4d",
     marginBottom: 4,
   },
   num: {

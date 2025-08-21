@@ -3,6 +3,7 @@ import { useState } from "react";
 import useFetch from "../../hooks/useFetch";
 import SkeletonLoader from "../UI/SkeletonLoader";
 import WeatherIcon from "../UI/WeatherIcon";
+import { useSettingsDataContext } from "../../data/SettingsContext";
 
 export default function UserLocationData({ data, screenHeight }) {
   const styles = StyleSheet.create({
@@ -52,7 +53,9 @@ export default function UserLocationData({ data, screenHeight }) {
 
   const { lat, lon } = data;
 
-  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=4b697ed7a09995dacb97f44eb9978af3&units=metric`;
+  const {units} = useSettingsDataContext()
+
+  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=4b697ed7a09995dacb97f44eb9978af3&units=${units}`;
 
   const { data: weatherData, isPending, error } = useFetch(url);
 
@@ -91,7 +94,7 @@ export default function UserLocationData({ data, screenHeight }) {
       resizeMode="cover"
       onLoad={() => setImageLoaded(true)}
     >
-      {isPending ||
+      {isPending || 
         (!imageLoaded && (
           <SkeletonLoader screenHeight={screenHeight} type={"C"} />
         ))}
@@ -102,7 +105,7 @@ export default function UserLocationData({ data, screenHeight }) {
           </View>
           <View style={styles.DataContainer}>
             <Text style={[styles.text, { fontSize: 26 }]}>
-              {weatherDataF.city}, {weatherDataF.country}
+              {weatherDataF.city}
             </Text>
             <Text style={[styles.text, { fontSize: 20 }]}>
               {weatherDataF.temp}

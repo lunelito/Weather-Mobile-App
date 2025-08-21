@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { Storage } from "expo-storage"; // *** tu dołożyłem kurwa ***
+import { Storage } from "expo-storage"; 
 import {
   getCurrentPositionAsync,
   useForegroundPermissions,
@@ -14,18 +14,20 @@ const UserLocationContext = createContext();
 export const useUserLocation = () => useContext(UserLocationContext);
 
 export const UserLocationProvider = ({ children }) => {
-  const [userLocation, setUserLocation] = useState([]);
+  const [userLocation, setUserLocation] = useState(null);
 
   const [locationPermissionInformation, requestPermission] =
     useForegroundPermissions();
 
   const verifyPermissions = async () => {
+    if (!locationPermissionInformation) return false;
+    
     if (locationPermissionInformation.status === PermissionStatus.UNDETERMINED) {
       const permissionResponse = await requestPermission();
       return permissionResponse.granted;
     }
     if (locationPermissionInformation.status === PermissionStatus.DENIED) {
-      Alert.alert("Musisz przyznać pozwolenie, kurwa!");
+      Alert.alert("you need to give us acces");
       return false;
     }
     return true;

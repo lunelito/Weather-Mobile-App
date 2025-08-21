@@ -10,6 +10,7 @@ import {
 import useFetch from "../../hooks/useFetch";
 import { useState, useEffect } from "react";
 import { useSavedWeatherLocations } from "../../data/SavedWeatherLocationsContext";
+import { useSettingsDataContext } from "../../data/SettingsContext";
 
 export default function SearchList({
   query,
@@ -18,10 +19,12 @@ export default function SearchList({
   setIsFocused,
 }) {
   const navigation = useNavigation();
-  
+
   const [debouncedQuery, setDebouncedQuery] = useState(query);
 
   const { weatherLocations } = useSavedWeatherLocations();
+
+  const { themeColors } = useSettingsDataContext();
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -38,12 +41,12 @@ export default function SearchList({
   );
 
   // remake this later shit code doesnt work well or api make duplicat
-  
+
   const uniqueData = data
     ? data.filter((city) => {
         const cityName = city.name ? city.name.toLowerCase() : "";
         const cityCountry = city.country ? city.country.toLowerCase() : "";
-        
+
         return !weatherLocations.some((saved) => {
           const savedName = saved.name ? saved.name.toLowerCase() : "";
           const savedCountry = saved.country ? saved.country.toLowerCase() : "";
@@ -81,10 +84,16 @@ export default function SearchList({
           onPress={() => handleSelect(item)}
           style={({ pressed }) => [
             styles.resultItem,
-            pressed && styles.pressed,
+            {
+              borderBottomColor: themeColors.textColor,
+              backgroundColor: themeColors.backgroundColor,
+            },
+            pressed && {
+              backgroundColor: themeColors.secondaryBackgroundColor,
+            },
           ]}
         >
-          <Text style={styles.cityText}>
+          <Text style={[styles.cityText,{color:themeColors.textColor}]}>
             {item.name}, {item.state}, {item.country}
           </Text>
         </Pressable>
@@ -97,15 +106,6 @@ const styles = StyleSheet.create({
   resultItem: {
     padding: 22,
     borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
-    backgroundColor: "#121212",
-  },
-  pressed: {
-    backgroundColor: "#2C2C2C",
-  },
-  cityText: {
-    fontSize: 16,
-    color:"#E0E0E0"
   },
   messageContainer: {
     padding: 20,

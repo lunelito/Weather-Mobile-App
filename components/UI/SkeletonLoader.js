@@ -1,6 +1,9 @@
 import { StyleSheet, Text, View } from "react-native";
+import { useSettingsDataContext } from "../../data/SettingsContext";
 
 export default function SkeletonLoader({ screenHeight, type }) {
+  const { themeColors } = useSettingsDataContext();
+
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -8,12 +11,12 @@ export default function SkeletonLoader({ screenHeight, type }) {
       padding: 16,
       justifyContent: "space-between",
       alignItems: "center",
-      backgroundColor: "#292929",
+      backgroundColor: themeColors.SkeletonLoaderContainer,
       overflow: "hidden",
     },
     text: {
       fontSize: 16,
-      color: "transparent",
+      color: themeColors.SkeletonLoaderText,
       textAlign: "right",
     },
     weatherIconContainer: {
@@ -31,11 +34,14 @@ export default function SkeletonLoader({ screenHeight, type }) {
     lodaingCirle: {
       height: 100,
       width: 100,
-      backgroundColor: "#4d4d4d",
+      backgroundColor: themeColors.SkeletonLoaderText,
       borderRadius: 100,
     },
     laodingSquare: {
-      backgroundColor: "#4d4d4d",
+      backgroundColor: themeColors.SkeletonLoaderText,
+      borderRadius: 6,
+      width: 120,
+      height: 20,
     },
   });
 
@@ -49,7 +55,7 @@ export default function SkeletonLoader({ screenHeight, type }) {
           borderTopRightRadius: screenHeight * 0.15,
           borderBottomRightRadius: screenHeight * 0.15,
           flexDirection: "row-reverse",
-          padding:36
+          padding: 36,
         },
         type === "R"
           ? {
@@ -76,13 +82,13 @@ export default function SkeletonLoader({ screenHeight, type }) {
         ]}
       >
         <View style={styles.laodingSquare}>
-          <Text style={[styles.text, { fontSize: 26 }]}>----,----</Text>
+          <Text style={[styles.text, { fontSize: 26 }]}>----</Text>
         </View>
         <View style={styles.laodingSquare}>
-          <Text style={[styles.text, { fontSize: 20 }]}>----,----</Text>
+          <Text style={[styles.text, { fontSize: 20 }]}>----</Text>
         </View>
         <View style={styles.laodingSquare}>
-          <Text style={[styles.text, { fontSize: 14 }]}>----,----</Text>
+          <Text style={[styles.text, { fontSize: 14 }]}>----</Text>
         </View>
       </View>
     </View>

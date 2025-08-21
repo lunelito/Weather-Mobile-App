@@ -1,19 +1,34 @@
 import { Dimensions, StyleSheet, Text, View } from "react-native";
 import { useDeviceDataContext } from "../../data/DeviceDataContext";
+import { useSettingsDataContext } from "../../data/SettingsContext";
 
 export default function SingleDataGrayContainer({ x, y, title, children }) {
   const { screenWidth } = useDeviceDataContext();
+  const { themeColors } = useSettingsDataContext();
 
   const boxSize = screenWidth * 0.5 - (x % 2 === 0 ? 20 : 25);
 
   return (
     <View
-      style={[styles.container, { width: boxSize * x, height: boxSize * y }]}
+      style={[
+        styles.container,
+        {
+          width: boxSize * x,
+          height: boxSize * y,
+          backgroundColor: themeColors.containerColor,
+        },
+      ]}
     >
       <View style={styles.row}>
-        <View style={styles.line} />
-        <Text style={styles.text}>{title}</Text>
-        <View style={styles.line} />
+        <View
+          style={[styles.line, { backgroundColor: themeColors.textColor }]}
+        />
+        <Text style={[styles.text, { color: themeColors.textColor }]}>
+          {title}
+        </Text>
+        <View
+          style={[styles.line, { backgroundColor: themeColors.textColor }]}
+        />
       </View>
       <View style={styles.content}>{children}</View>
     </View>
@@ -22,26 +37,23 @@ export default function SingleDataGrayContainer({ x, y, title, children }) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "rgba(0,0,0,0.8)",
     padding: 15,
     borderRadius: 8,
     margin: 5,
   },
   text: {
-    color: "white",
     fontSize: 16,
-    marginHorizontal: 8
+    marginHorizontal: 8,
   },
-   row: {
+  row: {
     flexDirection: "row",
     alignItems: "center",
   },
-  content:{
-    flex:1
+  content: {
+    flex: 1,
   },
   line: {
     flex: 1,
     height: 1,
-    backgroundColor: "#ffffff",
-  }
+  },
 });

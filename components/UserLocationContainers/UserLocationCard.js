@@ -9,12 +9,11 @@ export default function UserLocationCard({ item }) {
   const styles = StyleSheet.create({
     container: {
       width: screenWidth * 0.9,
+      justifyContent:"center",
       height: screenHeight * 0.15,
       marginBottom: 50,
-      backgroundColor: "#292929",
       borderRadius: 12,
       flexDirection: "row",
-      width: "90%",
       borderTopLeftRadius: screenHeight * 0.15,
       borderBottomLeftRadius: screenHeight * 0.15,
       borderTopRightRadius: screenHeight * 0.15,

@@ -2,6 +2,7 @@ import React from "react";
 import useFetch from "../../../hooks/useFetch";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import UVSkeletonLoader from "./UVSkeletonLoader";
+import { useSettingsDataContext } from "../../../data/SettingsContext";
 
 export default function UVContainer({ data }) {
   const { lat, lon } = data;
@@ -13,6 +14,8 @@ export default function UVContainer({ data }) {
   } = useFetch(
     `https://api.open-meteo.com/v1/forecast?latitude=52.2297&longitude=21.0122&daily=uv_index_max&timezone=Europe/Warsaw`
   );
+
+  const { themeColors } = useSettingsDataContext();
 
   const days = [
     "Niedziela",
@@ -32,64 +35,68 @@ export default function UVContainer({ data }) {
     return "#800080";
   };
 
-  if (!onecallApi) return <Text style={{ color: "white" }}>Ładowanie...</Text>;
-
-  const UVindexData = {
+  const UVindexData = onecallApi && {
     time: onecallApi.daily.time,
     uvIndex: onecallApi.daily.uv_index_max,
   };
 
   return isPending ? (
-  <UVSkeletonLoader />
-) : (
-  <View style={styles.container}>
-    <View style={styles.singleCircleContainer}>
-      <View
-        style={[
-          styles.circle,
-          { backgroundColor: getUVColor(UVindexData.uvIndex[0]) },
-        ]}
-      >
-        <Text style={styles.num}>{UVindexData.uvIndex[0]}</Text>
+    <UVSkeletonLoader />
+  ) : (
+    <View style={styles.container}>
+      <View style={styles.singleCircleContainer}>
+        <View
+          style={[
+            styles.circle,
+            { backgroundColor: getUVColor(UVindexData.uvIndex[0]) },
+          ]}
+        >
+          <Text style={[styles.num, { color: themeColors.textColor }]}>
+            {UVindexData.uvIndex[0]}
+          </Text>
+        </View>
       </View>
-    </View>
 
-    <ScrollView
-      horizontal
-      showsHorizontalScrollIndicator={false} // ukrywa pasek
-      style={styles.manyCircleContainer}
-      contentContainerStyle={{ alignItems: "center" }}
-    >
-      {UVindexData.time.map((date, i) => {
-        if (i === 0) return null;
-        const dayName = days[new Date(date).getDay()];
-        return (
-          <View key={date} style={styles.singleLittleCircleContainer}>
-            <Text style={styles.dayText}>{dayName}</Text>
-            <View
-              style={[
-                styles.littleCircle,
-                { backgroundColor: getUVColor(UVindexData.uvIndex[i]) },
-              ]}
-            >
-              <Text style={styles.num}>{UVindexData.uvIndex[i]}</Text>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={styles.manyCircleContainer}
+        contentContainerStyle={{ alignItems: "center" }}
+      >
+        {UVindexData.time.map((date, i) => {
+          if (i === 0) return null;
+          const dayName = days[new Date(date).getDay()];
+          return (
+            <View key={date} style={styles.singleLittleCircleContainer}>
+              <Text style={[styles.dayText, { color: themeColors.textColor }]}>
+                {dayName}
+              </Text>
+              <View
+                style={[
+                  styles.littleCircle,
+                  { backgroundColor: getUVColor(UVindexData.uvIndex[i]) },
+                ]}
+              >
+                <Text style={[styles.num, { color: themeColors.textColor }]}>
+                  {UVindexData.uvIndex[i]}
+                </Text>
+              </View>
             </View>
-          </View>
-        );
-      })}
-    </ScrollView>
-  </View>
-);
+          );
+        })}
+      </ScrollView>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     padding: 10,
-    gap:5
+    gap: 5,
   },
   singleCircleContainer: {
-    width:"30%",
+    width: "30%",
     alignItems: "center",
     marginRight: 20,
   },
@@ -101,7 +108,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   manyCircleContainer: {
-    width:"70%",
+    width: "70%",
     flexDirection: "row",
   },
   singleLittleCircleContainer: {

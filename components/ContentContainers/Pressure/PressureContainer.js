@@ -1,9 +1,12 @@
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { useSettingsDataContext } from "../../../data/SettingsContext";
 
 export default function PressureContainer({ data }) {
   const Pressure = data.main.pressure;
   const [P, setP] = useState(0);
+
+  const { themeColors } = useSettingsDataContext();
 
   useEffect(() => {
     let interval = null;
@@ -19,7 +22,6 @@ export default function PressureContainer({ data }) {
     }
     return () => clearInterval();
   }, [P, Pressure]);
-
 
   const minPressure = 980;
   const maxPressure = 1050;
@@ -40,21 +42,21 @@ export default function PressureContainer({ data }) {
   const angle = -90 + (offset / (range / 2)) * 90;
   const rad = (angle * Math.PI) / 180;
 
-  const dotX = center + radius * Math.cos(rad) - 7;
-  const dotY = center + radius * Math.sin(rad) - 14;
+  const dotX = center + radius * Math.cos(rad) - 9;
+  const dotY = center + radius * Math.sin(rad) - 16;
 
   const color = offset > 0 ? "#c40404" : "#4b8dca";
 
   return (
     <View style={styles.container}>
-      <View style={[styles.circle]}>
+      <View style={[styles.circle, {borderColor:themeColors.textColor}]}>
         <View
           style={[
             styles.dot,
             { left: dotX, top: dotY, backgroundColor: color },
           ]}
         />
-        <Text style={styles.text}>{P} hPa</Text>
+        <Text style={[styles.text, {color:themeColors.textColor}]}>{P} hPa</Text>
       </View>
     </View>
   );
@@ -67,8 +69,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   circle: {
-    borderWidth: 4,
-    borderColor: "white",
+    borderWidth: 2,
     position: "relative",
     justifyContent: "center",
     alignItems: "center",
@@ -83,7 +84,6 @@ const styles = StyleSheet.create({
     borderRadius: 7,
   },
   text: {
-    color: "white",
     fontSize: 16,
     fontWeight: "bold",
     position: "absolute",

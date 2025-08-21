@@ -12,7 +12,7 @@ export default function AllWeatherLocationContainer() {
     <>
       <ScrollView>
         <View style={styles.contentContainer}>
-          <View>
+          <View s>
             {userLocation && (
               <UserLocationCard item={userLocation} index={"loc"} />
             )}
@@ -34,5 +34,6 @@ const styles = StyleSheet.create({
   contentContainer: {
     width: "100%",
     alignItems: "center",
+    justifyContent:"center"
   },
 });

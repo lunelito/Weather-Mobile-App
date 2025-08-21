@@ -1,33 +1,45 @@
 import { StyleSheet, View, Text } from "react-native";
 import { Entypo } from "@expo/vector-icons";
+import { useSettingsDataContext } from "../../../data/SettingsContext";
 
 export default function WindContainer({ data }) {
+  const { themeColors } = useSettingsDataContext();
 
   return (
     <View style={styles.container}>
       <View style={styles.dataContainer}>
         <View style={styles.textContainer}>
-          <Text style={styles.text}>Gusts:</Text>
-          <Text style={styles.text}>{data.wind.gust} m/s</Text>
+          <Text style={[styles.text, { color: themeColors.textColor }]}>
+            Gusts:
+          </Text>
+          <Text style={[styles.text, { color: themeColors.textColor }]}>
+            {data.wind.gust} m/s
+          </Text>
         </View>
         <View style={styles.line} />
         <View style={styles.textContainer}>
-          <Text style={styles.text}>Direction:</Text>
-          <Text style={styles.text}>
+          <Text style={[styles.text, { color: themeColors.textColor }]}>
+            Direction:
+          </Text>
+          <Text style={[styles.text, { color: themeColors.textColor }]}>
             {data.wind.deg}
             {"\u00B0"}
           </Text>
         </View>
         <View style={styles.line} />
         <View style={styles.textContainer}>
-          <Text style={styles.text}>Speed:</Text>
-          <Text style={styles.text}>{data.wind.speed} m/s</Text>
+          <Text style={[styles.text, { color: themeColors.textColor }]}>
+            Speed:
+          </Text>
+          <Text style={[styles.text, { color: themeColors.textColor }]}>
+            {data.wind.speed} m/s
+          </Text>
         </View>
       </View>
       <View style={styles.compassContainer}>
         <Entypo
           name="compass"
-          color={"white"}
+          color={themeColors.textColor}
           size={100}
           style={{ transform: [{ rotate: `${-45 + data.wind.deg}deg` }] }}
         />
@@ -43,7 +55,7 @@ const styles = StyleSheet.create({
   },
   dataContainer: {
     width: "60%",
-    padding:10,
+    padding: 10,
     height: "100%",
     justifyContent: "center",
     alignItems: "center",
@@ -53,10 +65,8 @@ const styles = StyleSheet.create({
     height: "100%",
     justifyContent: "center",
     alignItems: "center",
-    
   },
   text: {
-    color: "white",
     fontSize: 16,
     textAlign: "center",
   },
@@ -64,11 +74,10 @@ const styles = StyleSheet.create({
     height: 2,
     borderRadius: 10,
     width: "110%",
-    backgroundColor: "#ffffff",
   },
   textContainer: {
     padding: 10,
-    width:"100%",
+    width: "100%",
     flexDirection: "row",
     justifyContent: "space-between",
   },

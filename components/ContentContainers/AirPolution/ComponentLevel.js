@@ -52,6 +52,7 @@ export default function ComponentLevel({ component, value, children, style }) {
       { max: Infinity, label: "Very Poor", color: "red" },
     ],
   };
+
   const getComponentLevel = (component, value) => {
     const levels = COMPONENT_LEVELS[component];
     if (!levels || value == null) {
@@ -64,10 +65,24 @@ export default function ComponentLevel({ component, value, children, style }) {
 
   return (
     <View style={[styles.container, style && style[0]]}>
-      <Text style={[styles.level, { color: level.color }, style && style[1]]}>
+      <Text
+        style={[
+          styles.level,
+          { color: level.color },
+          style && style[1],
+          style && style[2],
+        ]}
+      >
         {children}
       </Text>
-      <Text style={[styles.level, { color: level.color }, style && style[1]]}>
+      <Text
+        style={[
+          styles.level,
+          { color: level.color },
+          style && style[1],
+          style && style[2],
+        ]}
+      >
         {value} μg/m³
       </Text>
     </View>

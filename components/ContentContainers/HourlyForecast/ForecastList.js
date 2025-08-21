@@ -12,17 +12,22 @@ import {
 import SingleForcastHour from "./SingleForcastHour";
 import { useNavigation } from "@react-navigation/native";
 import SkeletonLoader from "./SkeletonLoader";
+import { useSettingsDataContext } from "../../../data/SettingsContext";
 
 export default function ForecastList({ data }) {
   const { lat, lon } = data;
+
+  const { units } = useSettingsDataContext();
 
   const {
     data: HourlyForecastData,
     isPending,
     error,
   } = useFetch(
-    `https://pro.openweathermap.org/data/2.5/forecast/hourly?lat=${lat}&lon=${lon}&units=metric&appid=4b697ed7a09995dacb97f44eb9978af3`
+    `https://pro.openweathermap.org/data/2.5/forecast/hourly?lat=${lat}&lon=${lon}&units=${units}&appid=4b697ed7a09995dacb97f44eb9978af3`
   );
+
+  const {themeColors} = useSettingsDataContext()
 
   const navigation = useNavigation();
 
@@ -44,7 +49,7 @@ export default function ForecastList({ data }) {
   return (
     <>
       {isPending ? (
-        <ScrollView  horizontal={true}>
+        <ScrollView horizontal={true}>
           {Array.from({ length: 20 }).map((_, i) => (
             <SkeletonLoader key={i} />
           ))}
@@ -60,7 +65,7 @@ export default function ForecastList({ data }) {
       )}
       <Button
         title="see more of hourly Forcast"
-        color={"white"}
+        color={themeColors.textColor}
         onPress={() =>
           navigation.navigate("DetailForcastList", {
             HourlyForecastData: HourlyForecastData,

@@ -1,22 +1,18 @@
-import {
-  Button,
-  Keyboard,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { Button, Keyboard, StyleSheet, Text, View } from "react-native";
 import { useState } from "react";
-import { useFocusEffect} from "@react-navigation/native";
+import { useFocusEffect } from "@react-navigation/native";
 import { useCallback } from "react";
 import SearchContainer from "./SearchFindPlaces/SearchContainer";
 import AllWeatherLocationContainer from "./MemoryWeatherPlaceContainer/AllWeatherLocationContainer";
 import SearchList from "./SearchFindPlaces/SearchList";
 import { useUserLocation } from "../data/UserLocationWeather";
+import { useSettingsDataContext } from "../data/SettingsContext";
 export default function MainPage() {
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState(null);
   const [isFocused, setIsFocused] = useState(false);
   const { getUserLocation, userLocation } = useUserLocation();
+  const { themeColors } = useSettingsDataContext();
 
   useFocusEffect(
     useCallback(() => {
@@ -27,8 +23,15 @@ export default function MainPage() {
     }, [])
   );
 
+  console.log(themeColors.backgroundColor)
+
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        { backgroundColor: themeColors.backgroundColor },
+      ]}
+    >
       <View style={styles.searchContainer}>
         <SearchContainer
           query={query}
@@ -73,7 +76,6 @@ export default function MainPage() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor:"#121212"
   },
   searchContainer: {
     flex: 1,

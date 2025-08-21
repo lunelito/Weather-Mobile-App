@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 import Feather from "@expo/vector-icons/Feather";
+import { useSettingsDataContext } from "../../../data/SettingsContext";
 
 export default function SunRAndSContainer({ data }) {
   const getHourFromTimestamp = (timestamp) => {
@@ -13,6 +14,8 @@ export default function SunRAndSContainer({ data }) {
   const sunset = data.sys.sunset;
   const now = Math.floor(Date.now() / 1000);
 
+  const { themeColors } = useSettingsDataContext();
+
   const dayLength = sunset - sunrise;
   const timeSinceSunrise = now - sunrise;
   let progress = (timeSinceSunrise / dayLength) * 100;
@@ -20,18 +23,29 @@ export default function SunRAndSContainer({ data }) {
   return (
     <View style={styles.container}>
       <View style={styles.sunRiseDataContainer}>
-        <Text style={styles.text}>{getHourFromTimestamp(sunrise)}</Text>
-        <Feather name="sun" size={44} color="white" />
+        <Text style={[styles.text, { color: themeColors.textColor }]}>
+          {getHourFromTimestamp(sunrise)}
+        </Text>
+        <Feather name="sun" size={44} color={themeColors.textColor} />
       </View>
 
       <View style={styles.lineContainer}>
-        <View style={styles.line} />
-        <View style={[styles.dot, { left: `${progress}%` }]} />
+        <View
+          style={[styles.line, { backgroundColor: themeColors.textColor }]}
+        />
+        <View
+          style={[
+            styles.dot,
+            { left: `${progress}%`, backgroundColor: themeColors.textColor },
+          ]}
+        />
       </View>
 
       <View style={styles.sunSetDataContainer}>
-        <Feather name="moon" size={44} color="white" />
-        <Text style={styles.text}>{getHourFromTimestamp(sunset)}</Text>
+        <Feather name="moon" size={44} color={themeColors.textColor} />
+        <Text style={[styles.text, { color: themeColors.textColor }]}>
+          {getHourFromTimestamp(sunset)}
+        </Text>
       </View>
     </View>
   );
@@ -80,7 +94,6 @@ const styles = StyleSheet.create({
     width: 14,
     height: 14,
     borderRadius: 7,
-    backgroundColor: "white",
     position: "absolute",
     transform: [{ translateX: -7 }],
   },

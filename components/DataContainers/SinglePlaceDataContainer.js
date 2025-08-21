@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import useFetch from "../../hooks/useFetch";
 import { useLayoutEffect, useState } from "react";
-import SkeletonCard from "../UI/SkeletonLoader";
 import { useNavigation } from "@react-navigation/native";
 import SingleDataGrayContainer from "../UI/SingleDataGrayContainer";
 import ForecastList from "../ContentContainers/HourlyForecast/ForecastList";
@@ -21,44 +20,70 @@ import SunRAndSContainer from "../ContentContainers/SunRise&SunSet/SunRAndSConta
 import SeaLevel from "../ContentContainers/SeaLevel/SeaLevel";
 import PressureContainer from "../ContentContainers/Pressure/PressureContainer";
 import UVContainer from "../ContentContainers/UVindex/UVContainer";
+import { useSettingsDataContext } from "../../data/SettingsContext";
+import IconButton from "../UI/IconButton";
+
+import LottieView from "lottie-react-native";
+import loaderAnimation from "../../assets/animations/loader.json";
 
 export default function SinglePlaceDataContainer({ data, deleteFromStorage }) {
   const { lat, lon } = data;
-
   const navigation = useNavigation();
+  const { units, themeColors } = useSettingsDataContext();
 
-  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=4b697ed7a09995dacb97f44eb9978af3&units=metric`;
+  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=4b697ed7a09995dacb97f44eb9978af3&units=${units}`;
   const { data: weatherData, isPending, error } = useFetch(url);
 
   const [imageLoaded, setImageLoaded] = useState(false);
   const [scrollY, setScrollY] = useState(0);
 
   useLayoutEffect(() => {
-    if (weatherData?.name) {
+    if (isPending || !imageLoaded || !weatherData) {
+      navigation.setOptions({
+        headerTitle: "",
+        headerTransparent: true,
+        headerTintColor: themeColors.textColor,
+        headerLeft: () => (
+          <IconButton
+            color={themeColors.textColor}
+            icon="arrow-back-outline"
+            size={0}
+            onPress={() => navigation.goBack()}
+          />
+        ),
+      });
+    } else {
       navigation.setOptions({
         headerTitle: weatherData.name,
         headerTransparent: true,
         headerStyle: {
           backgroundColor:
-            scrollY > 10 ? "rgba(0,0,0,0.9)" : "rgba(255,255,255,0)",
+            scrollY > 10 ? themeColors.containerColor : "rgba(255,255,255,0)",
           elevation: 0,
           shadowOpacity: 0,
         },
-        headerTintColor: "#fff",
+        headerTintColor: themeColors.textColor,
+        headerLeft: () => (
+          <IconButton
+            color={themeColors.textColor}
+            icon="arrow-back-outline"
+            size={28}
+            onPress={() => navigation.goBack()}
+          />
+        ),
       });
     }
-  }, [navigation, weatherData, scrollY]);
+  }, [navigation, weatherData, scrollY, themeColors,imageLoaded]);
 
   if (error) return <Text>Błąd: {error}</Text>;
-  if (!weatherData) return <SkeletonCard />;
 
-  const weatherDataF = {
+  const weatherDataF = weatherData && {
     city: weatherData.name,
     country: weatherData.sys.country,
     temp: weatherData.main.temp?.toFixed(1),
     tempMax: weatherData.main.temp_max?.toFixed(0),
     tempMin: weatherData.main.temp_min?.toFixed(0),
-    weatherType: weatherData.weather[0].main,
+    weatherType: weatherData.weather?.[0]?.main || "Clear",
   };
 
   const weatherImages = {
@@ -69,6 +94,27 @@ export default function SinglePlaceDataContainer({ data, deleteFromStorage }) {
     Snow: require("../../assets/photos/Snow.png"),
     Thunderstorm: require("../../assets/photos/Thunderstorm.png"),
   };
+
+  if (isPending || !imageLoaded || !weatherData) {
+    return (
+      <ImageBackground
+        style={[styles.ImageContainer,{backgroundColor:themeColors.backgroundColor}]}
+        source={weatherData && weatherImages[weatherDataF?.weatherType]}
+        resizeMode="cover"
+        onLoad={() => setImageLoaded(true)}
+      >
+        <View style={styles.containerLoader}>
+          <LottieView
+            source={loaderAnimation}
+            autoPlay
+            loop
+            style={{ width: 600, height: 600 }}
+          />
+        </View>
+      </ImageBackground>
+    );
+  }
+
   return (
     <ImageBackground
       style={styles.ImageContainer}
@@ -81,57 +127,49 @@ export default function SinglePlaceDataContainer({ data, deleteFromStorage }) {
         scrollEventThrottle={16}
       >
         <View style={styles.container}>
-          {isPending ||
-            (!imageLoaded && (
-              <ActivityIndicator
-                style={{
-                  flex: 1,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  paddingTop: 100,
-                }}
-                size="large"
-                color="#ccc"
-              />
-            ))}
-          {imageLoaded && !isPending && (
-            <>
-              <SingleDataGrayContainer x={2} y={2} title={"Hourly forecast"}>
-                <ForecastList data={data} />
-              </SingleDataGrayContainer>
-              <SingleDataGrayContainer x={2} y={1} title={"Sun"}>
-                <SunRAndSContainer data={weatherData} />
-              </SingleDataGrayContainer>
-              <SingleDataGrayContainer x={2} y={1} title={"UV index"}>
-                <UVContainer data={data} />
-              </SingleDataGrayContainer>
-              <SingleDataGrayContainer x={1} y={1} title={"Pressure"}>
-                <PressureContainer data={weatherData} />
-              </SingleDataGrayContainer>
-              <SingleDataGrayContainer x={1} y={1} title={"Sea level"}>
-                <SeaLevel data={weatherData} />
-              </SingleDataGrayContainer>
-              <SingleDataGrayContainer x={2} y={1} title={"Wind"}>
-                <WindContainer data={weatherData} />
-              </SingleDataGrayContainer>
-              <SingleDataGrayContainer x={2} y={2} title={"Air Polution"}>
-                <AirPolution data={data} />
-              </SingleDataGrayContainer>
-              <SingleDataGrayContainer x={1} y={1} title={"Humidity"}>
-                <HumidityContainer data={weatherData} />
-              </SingleDataGrayContainer>
-              <SingleDataGrayContainer x={1} y={1} title={"Visibility"}>
-                <VisibilityContainer data={weatherData} />
-              </SingleDataGrayContainer>
-              <View style={{ margin: 60 }}>
-                <Button
-                  title="delete from memory"
-                  onPress={deleteFromStorage}
-                  color="white"
-                />
-              </View>
-            </>
-          )}
+          <SingleDataGrayContainer x={2} y={2} title="Hourly forecast">
+            <ForecastList data={data} />
+          </SingleDataGrayContainer>
+
+          <SingleDataGrayContainer x={2} y={1} title="Sun">
+            <SunRAndSContainer data={weatherData} />
+          </SingleDataGrayContainer>
+
+          <SingleDataGrayContainer x={2} y={1} title="UV index">
+            <UVContainer data={data} />
+          </SingleDataGrayContainer>
+
+          <SingleDataGrayContainer x={1} y={1} title="Pressure">
+            <PressureContainer data={weatherData} />
+          </SingleDataGrayContainer>
+
+          <SingleDataGrayContainer x={1} y={1} title="Sea level">
+            <SeaLevel data={weatherData} />
+          </SingleDataGrayContainer>
+
+          <SingleDataGrayContainer x={2} y={1} title="Wind">
+            <WindContainer data={weatherData} />
+          </SingleDataGrayContainer>
+
+          <SingleDataGrayContainer x={2} y={2} title="Air Polution">
+            <AirPolution data={data} />
+          </SingleDataGrayContainer>
+
+          <SingleDataGrayContainer x={1} y={1} title="Humidity">
+            <HumidityContainer data={weatherData} />
+          </SingleDataGrayContainer>
+
+          <SingleDataGrayContainer x={1} y={1} title="Visibility">
+            <VisibilityContainer data={weatherData} />
+          </SingleDataGrayContainer>
+
+          <View style={{ margin: 60 }}>
+            <Button
+              title="delete from memory"
+              onPress={deleteFromStorage}
+              color={themeColors.textColor}
+            />
+          </View>
         </View>
       </ScrollView>
     </ImageBackground>
@@ -141,7 +179,6 @@ export default function SinglePlaceDataContainer({ data, deleteFromStorage }) {
 const styles = StyleSheet.create({
   ImageContainer: {
     flex: 1,
-    backgroundColor: "#121212",
     overflow: "hidden",
   },
   container: {
@@ -150,5 +187,12 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     flexDirection: "row",
     justifyContent: "center",
-  }
+  },
+  containerLoader: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+    height: "100%",
+  },
 });
