@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 32,
-    fontWeight: "700",
+    fontWeight:700,
   },
   contentContainer: {
     height: "100%",

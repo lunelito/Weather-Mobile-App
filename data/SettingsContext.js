@@ -28,16 +28,16 @@ const lightTheme = {
 };
 
 export const SettingsProvider = ({ children }) => {
-  const systemTheme = useColorScheme() || "light";
+  const systemTheme = useColorScheme();
   const [units, SetUnits] = useState("metric");
   const [theme, setTheme] = useState("dark");
 
   const themeColors = useMemo(() => {
-    if (theme === "auto") {
-      return systemTheme === "dark" ? darkTheme : lightTheme;
-    }
-    return theme === "dark" ? darkTheme : lightTheme;
+    const currentTheme = theme === "auto" ? systemTheme : theme;
+    return currentTheme === "dark" ? darkTheme : lightTheme;
   }, [theme, systemTheme]);
+
+  console.log(systemTheme)
 
   useEffect(() => {
     const laodUserUnits = async () => {

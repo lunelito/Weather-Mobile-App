@@ -60,7 +60,7 @@ export default function SingleWeatherCardDataL({
   }
 
   if (!weatherData) {
-    return <Text>Brak danych</Text>;
+    return <SkeletonLoader screenHeight={screenHeight} type={"L"} />;
   }
 
   const weatherDataF = {

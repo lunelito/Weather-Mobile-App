@@ -51,6 +51,7 @@ export default function UserLocationData({ data, screenHeight }) {
     },
   });
 
+  
   const { lat, lon } = data;
 
   const {units} = useSettingsDataContext()
@@ -66,7 +67,7 @@ export default function UserLocationData({ data, screenHeight }) {
   }
 
   if (!weatherData) {
-    return <Text>Brak danych</Text>;
+    return <SkeletonLoader screenHeight={screenHeight} type={"C"} />;
   }
 
   const weatherDataF = {

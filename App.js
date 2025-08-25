@@ -1,5 +1,11 @@
 import { StatusBar } from "expo-status-bar";
-import { SafeAreaView, StyleSheet, View } from "react-native";
+import {
+  SafeAreaView,
+  StyleSheet,
+  View,
+  Platform,
+  StatusBar as RNStatusBar,
+} from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 
@@ -23,16 +29,15 @@ const Stack = createNativeStackNavigator();
 function AppContent() {
   const { themeColors, theme } = useSettingsDataContext();
 
-  console.log(theme);
   return (
-    <View
-      style={[
-        styles.container,
-        { backgroundColor: themeColors.backgroundColor },
-      ]}
+    <SafeAreaView
+      style={{
+        flex: 1,
+        paddingTop: Platform.OS === "android" ? RNStatusBar.currentHeight : 0,
+        backgroundColor: themeColors.backgroundColor,
+      }}
     >
-      <StatusBar style={theme === "light" ? "dark" : "light"} />
-      <SafeAreaView style={{ flex: 1 }}>
+        <StatusBar style={theme === "light" ? "dark" : "light"} />
         <NavigationContainer>
           <Stack.Navigator initialRouteName="MainPage">
             <Stack.Screen
@@ -70,8 +75,7 @@ function AppContent() {
             />
           </Stack.Navigator>
         </NavigationContainer>
-      </SafeAreaView>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -88,9 +92,3 @@ export default function App() {
     </SavedWeatherLocationsProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});

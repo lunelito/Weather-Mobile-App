@@ -16,7 +16,9 @@ export default function WindContainer({ data }) {
             {data.wind.gust} m/s
           </Text>
         </View>
-        <View style={styles.line} />
+        <View
+          style={[styles.line, { backgroundColor: themeColors.textColor }]}
+        />
         <View style={styles.textContainer}>
           <Text style={[styles.text, { color: themeColors.textColor }]}>
             Direction:
@@ -26,7 +28,9 @@ export default function WindContainer({ data }) {
             {"\u00B0"}
           </Text>
         </View>
-        <View style={styles.line} />
+        <View
+          style={[styles.line, { backgroundColor: themeColors.textColor }]}
+        />
         <View style={styles.textContainer}>
           <Text style={[styles.text, { color: themeColors.textColor }]}>
             Speed:

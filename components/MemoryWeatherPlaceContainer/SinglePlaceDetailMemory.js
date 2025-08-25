@@ -1,26 +1,16 @@
 import { useLayoutEffect, useEffect } from "react";
-import { Button, Keyboard, Text, View } from "react-native";
+import {Keyboard, Text, View } from "react-native";
+import Button from "../UI/Button";
 import { useSavedWeatherLocations } from "../../data/SavedWeatherLocationsContext";
 import SinglePlaceDataContainer from "../DataContainers/SinglePlaceDataContainer";
+import { useSettingsDataContext } from "../../data/SettingsContext";
 
 export default function SinglePlaceDetailMemory({ route, navigation }) {
   const { data } = route.params;
 
-  const { weatherLocations, setWeatherLocations } = useSavedWeatherLocations();
+  const { themeColors } = useSettingsDataContext();
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerLeft: () => (
-        <Button
-          title="Anuluj"
-          color={"#ffffff"}
-          onPress={() => {
-            navigation.goBack();
-          }}
-        />
-      )
-    });
-  }, [navigation]);
+  const { weatherLocations, setWeatherLocations } = useSavedWeatherLocations();
 
   const deleteFromStorage = () => {
     const filteredWeatherLocations = weatherLocations.filter(
@@ -32,7 +22,19 @@ export default function SinglePlaceDetailMemory({ route, navigation }) {
 
   return (
     <View style={{ flex: 1 }}>
-      <SinglePlaceDataContainer data={data} deleteFromStorage={deleteFromStorage}/>
+      <SinglePlaceDataContainer
+        data={data}
+        moreContentM={
+          <View style={{ margin: 60 }}>
+            <Button
+              text={"Delete from memory"}
+              backgroundColor={themeColors.containerColor}
+              color={themeColors.textColor}
+              onPress={deleteFromStorage}
+            />
+          </View>
+        }
+      />
     </View>
   );
 }

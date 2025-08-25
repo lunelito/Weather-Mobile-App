@@ -48,8 +48,8 @@ export default function SingleWeatherCardDataR({ data, screenHeight }) {
   });
 
   const { lat, lon } = data;
-  
-  const {units} = useSettingsDataContext()
+
+  const { units } = useSettingsDataContext();
 
   const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=4b697ed7a09995dacb97f44eb9978af3&units=${units}`;
 
@@ -62,7 +62,7 @@ export default function SingleWeatherCardDataR({ data, screenHeight }) {
   }
 
   if (!weatherData) {
-    return <Text>Brak danych</Text>;
+    return <SkeletonLoader screenHeight={screenHeight} type={"R"} />;
   }
 
   const weatherDataF = {

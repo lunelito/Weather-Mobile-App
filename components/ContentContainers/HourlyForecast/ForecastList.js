@@ -2,13 +2,13 @@ import React from "react";
 import useFetch from "../../../hooks/useFetch";
 import { useState } from "react";
 import {
-  Button,
   FlatList,
   ScrollView,
   StyleSheet,
   Text,
   View,
 } from "react-native";
+import Button from "../../UI/Button";
 import SingleForcastHour from "./SingleForcastHour";
 import { useNavigation } from "@react-navigation/native";
 import SkeletonLoader from "./SkeletonLoader";
@@ -64,7 +64,7 @@ export default function ForecastList({ data }) {
         />
       )}
       <Button
-        title="see more of hourly Forcast"
+        text="see more of hourly Forcast"
         color={themeColors.textColor}
         onPress={() =>
           navigation.navigate("DetailForcastList", {

@@ -7,7 +7,7 @@ export default function DoubleCircleContainer({ text, icon }) {
     <View style={styles.container}>
       <View style={styles.Circle}>
         <GradientCircle>
-          <Ionicons color={"black"} name={icon} size={"60"} />
+          <Ionicons color={"black"} name={icon} size={60} />
         </GradientCircle>
       </View>
       <View style={styles.dataCircle}>

@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { Storage } from "expo-storage"; 
+import { Storage } from "expo-storage";
 import {
   getCurrentPositionAsync,
   useForegroundPermissions,
@@ -14,15 +14,17 @@ const UserLocationContext = createContext();
 export const useUserLocation = () => useContext(UserLocationContext);
 
 export const UserLocationProvider = ({ children }) => {
-  const [userLocation, setUserLocation] = useState(null);
+  const [userLocation, setUserLocation] = useState([]);
 
   const [locationPermissionInformation, requestPermission] =
     useForegroundPermissions();
 
   const verifyPermissions = async () => {
     if (!locationPermissionInformation) return false;
-    
-    if (locationPermissionInformation.status === PermissionStatus.UNDETERMINED) {
+
+    if (
+      locationPermissionInformation.status === PermissionStatus.UNDETERMINED
+    ) {
       const permissionResponse = await requestPermission();
       return permissionResponse.granted;
     }
@@ -37,12 +39,16 @@ export const UserLocationProvider = ({ children }) => {
     const hasPermission = await verifyPermissions();
     if (!hasPermission) return;
 
-    const location = await getCurrentPositionAsync();
-
-    setUserLocation({
-      lat: location.coords.latitude,
-      lon: location.coords.longitude,
-    });
+    try {
+      const location = await getCurrentPositionAsync();
+      setUserLocation({
+        lat: location.coords.latitude,
+        lon: location.coords.longitude,
+      });
+    } catch (err) {
+      console.log(err);
+      Alert.alert("Could not get your location");
+    }
   };
 
   useEffect(() => {
@@ -55,7 +61,8 @@ export const UserLocationProvider = ({ children }) => {
           setUserLocation([]);
         }
       } catch (err) {
-        console.log( err);
+        console.log(err);
+        setUserLocation([]);
       }
     };
     loadUserLocation();
@@ -64,21 +71,23 @@ export const UserLocationProvider = ({ children }) => {
   useEffect(() => {
     const saveUserLocation = async () => {
       try {
-        if (userLocation) {
+        if (userLocation?.lat && userLocation?.lon) {
           await Storage.setItem({
             key: STORAGE_KEY,
             value: JSON.stringify(userLocation),
           });
         }
       } catch (err) {
-        console.log( err);
+        console.log(err);
       }
     };
     saveUserLocation();
   }, [userLocation]);
 
   return (
-    <UserLocationContext.Provider value={{ userLocation,setUserLocation, getUserLocation }}>
+    <UserLocationContext.Provider
+      value={{ userLocation, setUserLocation, getUserLocation }}
+    >
       {children}
     </UserLocationContext.Provider>
   );

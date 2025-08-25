@@ -3,9 +3,7 @@ import {
   Text,
   ImageBackground,
   StyleSheet,
-  Button,
   ScrollView,
-  ActivityIndicator,
 } from "react-native";
 import useFetch from "../../hooks/useFetch";
 import { useLayoutEffect, useState } from "react";
@@ -26,16 +24,37 @@ import IconButton from "../UI/IconButton";
 import LottieView from "lottie-react-native";
 import loaderAnimation from "../../assets/animations/loader.json";
 
-export default function SinglePlaceDataContainer({ data, deleteFromStorage }) {
+export default function SinglePlaceDataContainer({
+  data,
+  moreContentS,
+  moreContentM,
+}) {
   const { lat, lon } = data;
   const navigation = useNavigation();
   const { units, themeColors } = useSettingsDataContext();
 
-  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=4b697ed7a09995dacb97f44eb9978af3&units=${units}`;
-  const { data: weatherData, isPending, error } = useFetch(url);
+  const urlOpenWeather = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=4b697ed7a09995dacb97f44eb9978af3&units=${units}`;
+  const {
+    data: openWeatherApi,
+    isPending: openWeatherApiIsPending,
+    error: openWeatherApiError,
+  } = useFetch(urlOpenWeather);
+
+  const urlMeteo = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=uv_index_max&hourly=surface_pressure,pressure_msl&timezone=Europe/Warsaw`;
+  const {
+    data: meteoApi,
+    isPending: meteoIsPending,
+    error: meteoError,
+  } = useFetch(urlMeteo);
 
   const [imageLoaded, setImageLoaded] = useState(false);
   const [scrollY, setScrollY] = useState(0);
+
+  const isPending = openWeatherApiIsPending || meteoIsPending;
+  const error = openWeatherApiError || meteoError;
+
+  const weatherData = openWeatherApi;
+  const meteoData = meteoApi;
 
   useLayoutEffect(() => {
     if (isPending || !imageLoaded || !weatherData) {
@@ -43,16 +62,11 @@ export default function SinglePlaceDataContainer({ data, deleteFromStorage }) {
         headerTitle: "",
         headerTransparent: true,
         headerTintColor: themeColors.textColor,
-        headerLeft: () => (
-          <IconButton
-            color={themeColors.textColor}
-            icon="arrow-back-outline"
-            size={0}
-            onPress={() => navigation.goBack()}
-          />
-        ),
+        headerLeft: () => null,
+        headerRight: () => null,
       });
-    } else {
+    } 
+    if (!isPending && imageLoaded && weatherData) {
       navigation.setOptions({
         headerTitle: weatherData.name,
         headerTransparent: true,
@@ -71,18 +85,19 @@ export default function SinglePlaceDataContainer({ data, deleteFromStorage }) {
             onPress={() => navigation.goBack()}
           />
         ),
+        ...(moreContentS ? { headerRight: () => moreContentS } : {}),
       });
     }
-  }, [navigation, weatherData, scrollY, themeColors,imageLoaded]);
+  }, [navigation, weatherData, scrollY, themeColors, imageLoaded]);
 
-  if (error) return <Text>Błąd: {error}</Text>;
+  if (error) return <Text style={{ fontSize: 14 }}>Błąd: {error}</Text>;
 
   const weatherDataF = weatherData && {
-    city: weatherData.name,
-    country: weatherData.sys.country,
-    temp: weatherData.main.temp?.toFixed(1),
-    tempMax: weatherData.main.temp_max?.toFixed(0),
-    tempMin: weatherData.main.temp_min?.toFixed(0),
+    city: weatherData.name || "",
+    country: weatherData.sys?.country || "",
+    temp: weatherData.main?.temp?.toFixed(1) || "0",
+    tempMax: weatherData.main?.temp_max?.toFixed(0) || "0",
+    tempMin: weatherData.main?.temp_min?.toFixed(0) || "0",
     weatherType: weatherData.weather?.[0]?.main || "Clear",
   };
 
@@ -98,7 +113,10 @@ export default function SinglePlaceDataContainer({ data, deleteFromStorage }) {
   if (isPending || !imageLoaded || !weatherData) {
     return (
       <ImageBackground
-        style={[styles.ImageContainer,{backgroundColor:themeColors.backgroundColor}]}
+        style={[
+          styles.ImageContainer,
+          { backgroundColor: themeColors.backgroundColor },
+        ]}
         source={weatherData && weatherImages[weatherDataF?.weatherType]}
         resizeMode="cover"
         onLoad={() => setImageLoaded(true)}
@@ -118,7 +136,7 @@ export default function SinglePlaceDataContainer({ data, deleteFromStorage }) {
   return (
     <ImageBackground
       style={styles.ImageContainer}
-      source={weatherImages[weatherDataF.weatherType]}
+      source={weatherImages[weatherDataF.weatherType] || null}
       resizeMode="cover"
       onLoad={() => setImageLoaded(true)}
     >
@@ -136,15 +154,15 @@ export default function SinglePlaceDataContainer({ data, deleteFromStorage }) {
           </SingleDataGrayContainer>
 
           <SingleDataGrayContainer x={2} y={1} title="UV index">
-            <UVContainer data={data} />
+            <UVContainer data={meteoData} />
           </SingleDataGrayContainer>
 
           <SingleDataGrayContainer x={1} y={1} title="Pressure">
-            <PressureContainer data={weatherData} />
+            <PressureContainer data={meteoData} />
           </SingleDataGrayContainer>
 
           <SingleDataGrayContainer x={1} y={1} title="Sea level">
-            <SeaLevel data={weatherData} />
+            <SeaLevel data={meteoData} />
           </SingleDataGrayContainer>
 
           <SingleDataGrayContainer x={2} y={1} title="Wind">
@@ -163,13 +181,7 @@ export default function SinglePlaceDataContainer({ data, deleteFromStorage }) {
             <VisibilityContainer data={weatherData} />
           </SingleDataGrayContainer>
 
-          <View style={{ margin: 60 }}>
-            <Button
-              title="delete from memory"
-              onPress={deleteFromStorage}
-              color={themeColors.textColor}
-            />
-          </View>
+          {moreContentM}
         </View>
       </ScrollView>
     </ImageBackground>

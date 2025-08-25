@@ -1,19 +1,10 @@
 import React from "react";
 import useFetch from "../../../hooks/useFetch";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-import UVSkeletonLoader from "./UVSkeletonLoader";
 import { useSettingsDataContext } from "../../../data/SettingsContext";
 
 export default function UVContainer({ data }) {
-  const { lat, lon } = data;
-
-  const {
-    data: onecallApi,
-    isPending,
-    error,
-  } = useFetch(
-    `https://api.open-meteo.com/v1/forecast?latitude=52.2297&longitude=21.0122&daily=uv_index_max&timezone=Europe/Warsaw`
-  );
+  console.log(data);
 
   const { themeColors } = useSettingsDataContext();
 
@@ -35,14 +26,12 @@ export default function UVContainer({ data }) {
     return "#800080";
   };
 
-  const UVindexData = onecallApi && {
-    time: onecallApi.daily.time,
-    uvIndex: onecallApi.daily.uv_index_max,
+  const UVindexData = data && {
+    time: data.daily.time,
+    uvIndex: data.daily.uv_index_max,
   };
 
-  return isPending ? (
-    <UVSkeletonLoader />
-  ) : (
+  return (
     <View style={styles.container}>
       <View style={styles.singleCircleContainer}>
         <View
