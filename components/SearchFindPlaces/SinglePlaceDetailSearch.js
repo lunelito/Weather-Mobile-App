@@ -26,7 +26,10 @@ export default function SinglePlaceDetailSearch({ route, navigation }) {
             color={themeColors.textColor}
             icon="add"
             size={28}
-            onPress={() => [AddNewWeatherLocation(), navigation.goBack()]}
+            onPress={() => {
+              AddNewWeatherLocation();
+              navigation.goBack();
+            }}
           />
         }
       />

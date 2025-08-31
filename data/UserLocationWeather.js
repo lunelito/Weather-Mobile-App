@@ -14,26 +14,43 @@ const UserLocationContext = createContext();
 export const useUserLocation = () => useContext(UserLocationContext);
 
 export const UserLocationProvider = ({ children }) => {
-  const [userLocation, setUserLocation] = useState([]);
+  const [userLocation, setUserLocation] = useState(null);
 
   const [locationPermissionInformation, requestPermission] =
     useForegroundPermissions();
 
-  const verifyPermissions = async () => {
-    if (!locationPermissionInformation) return false;
+const verifyPermissions = async () => {
+  if (!locationPermissionInformation) return false;
 
-    if (
-      locationPermissionInformation.status === PermissionStatus.UNDETERMINED
-    ) {
-      const permissionResponse = await requestPermission();
-      return permissionResponse.granted;
-    }
-    if (locationPermissionInformation.status === PermissionStatus.DENIED) {
-      Alert.alert("you need to give us acces");
-      return false;
-    }
-    return true;
-  };
+  if (locationPermissionInformation.status === PermissionStatus.UNDETERMINED) {
+    Alert.alert(
+      "Location needed",
+      "We need access to your location to show the weather",
+      [
+        {
+          text: "Nope",
+          style: "cancel",
+          onPress: () => false,
+        },
+        {
+          text: "Okay",
+          onPress: async () => {
+            const permissionResponse = await requestPermission();
+            return permissionResponse.granted;
+          },
+        },
+      ]
+    );
+    return false;
+  }
+
+  if (locationPermissionInformation.status === PermissionStatus.DENIED) {
+    Alert.alert("you need to give us access");
+    return false;
+  }
+
+  return true;
+};
 
   const getUserLocation = async () => {
     const hasPermission = await verifyPermissions();
@@ -41,10 +58,11 @@ export const UserLocationProvider = ({ children }) => {
 
     try {
       const location = await getCurrentPositionAsync();
-      setUserLocation({
+      const newLocation = {
         lat: location.coords.latitude,
         lon: location.coords.longitude,
-      });
+      };
+      setUserLocation(newLocation);
     } catch (err) {
       console.log(err);
       Alert.alert("Could not get your location");
@@ -58,11 +76,11 @@ export const UserLocationProvider = ({ children }) => {
         if (data) {
           setUserLocation(JSON.parse(data));
         } else {
-          setUserLocation([]);
+          setUserLocation(null); 
         }
       } catch (err) {
-        console.log(err);
-        setUserLocation([]);
+        console.log("loadUserLocation error:", err);
+        setUserLocation(null);
       }
     };
     loadUserLocation();
@@ -78,7 +96,7 @@ export const UserLocationProvider = ({ children }) => {
           });
         }
       } catch (err) {
-        console.log(err);
+        console.log("saveUserLocation error:", err);
       }
     };
     saveUserLocation();

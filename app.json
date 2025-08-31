@@ -1,24 +1,24 @@
 {
   "expo": {
-    "name": "wApp",
-    "slug": "wApp",
+    "name": "Paper Weather",
+    "slug": "Paper Weather",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/paper_plane_adaptive_icon.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./assets/paper_plane_splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#1b263b"
     },
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/paper_plane_adaptive_icon.png",
+        "backgroundColor": "#1b263b"
       },
       "edgeToEdgeEnabled": true
     },

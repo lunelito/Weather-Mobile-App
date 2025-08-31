@@ -1,4 +1,4 @@
-import { Button, Keyboard, StyleSheet, Text, View } from "react-native";
+import {Keyboard, StyleSheet, Text, View } from "react-native";
 import { useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { useCallback } from "react";
@@ -7,6 +7,7 @@ import AllWeatherLocationContainer from "./MemoryWeatherPlaceContainer/AllWeathe
 import SearchList from "./SearchFindPlaces/SearchList";
 import { useUserLocation } from "../data/UserLocationWeather";
 import { useSettingsDataContext } from "../data/SettingsContext";
+import Button from "./UI/Button";
 export default function MainPage() {
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState(null);
@@ -23,7 +24,6 @@ export default function MainPage() {
     }, [])
   );
 
-  console.log(themeColors.backgroundColor)
 
   return (
     <View
@@ -54,7 +54,8 @@ export default function MainPage() {
             <View style={styles.infoContainer}>
               {!userLocation && (
                 <Button
-                  title="grant permission"
+                  text="Add weather from your location"
+                  color={"white"}
                   onPress={() => {
                     getUserLocation();
                     setIsFocused(false);

@@ -5,12 +5,14 @@ import {
   FlatList,
   Pressable,
   View,
-  ActivityIndicator,
+  Keyboard,
 } from "react-native";
 import useFetch from "../../hooks/useFetch";
 import { useState, useEffect } from "react";
 import { useSavedWeatherLocations } from "../../data/SavedWeatherLocationsContext";
 import { useSettingsDataContext } from "../../data/SettingsContext";
+import LottiLoader from "../UI/LottiLoader";
+import { useDeviceDataContext } from "../../data/DeviceDataContext";
 
 export default function SearchList({
   query,
@@ -21,35 +23,46 @@ export default function SearchList({
   const navigation = useNavigation();
 
   const [debouncedQuery, setDebouncedQuery] = useState(query);
+  const [screenHeightWithKeyboard, setScreenHeightWithKeyboard] = useState(0);
 
   const { weatherLocations } = useSavedWeatherLocations();
-
   const { themeColors } = useSettingsDataContext();
+  const { screenHeight } = useDeviceDataContext();
+
+  useEffect(() => {
+    const showSub = Keyboard.addListener("keyboardDidShow", (e) => {
+      setScreenHeightWithKeyboard(screenHeight - e.endCoordinates.height);
+    });
+
+    const hideSub = Keyboard.addListener("keyboardDidHide", () => {
+      setScreenHeightWithKeyboard(screenHeight);
+    });
+
+    return () => {
+      showSub.remove();
+      hideSub.remove();
+    };
+  }, [screenHeight]);
+
 
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedQuery(query);
     }, 500);
-
-    return () => {
-      clearTimeout(handler);
-    };
+    return () => clearTimeout(handler);
   }, [query]);
 
   const { data, isPending, error } = useFetch(
     `http://api.openweathermap.org/geo/1.0/direct?q=${debouncedQuery}&limit=20&appid=4b697ed7a09995dacb97f44eb9978af3`
   );
 
-  // remake this later shit code doesnt work well or api make duplicat
-
   const uniqueData = data
     ? data.filter((city) => {
-        const cityName = city.name ? city.name.toLowerCase() : "";
-        const cityCountry = city.country ? city.country.toLowerCase() : "";
-
+        const cityName = city.name?.toLowerCase() || "";
+        const cityCountry = city.country?.toLowerCase() || "";
         return !weatherLocations.some((saved) => {
-          const savedName = saved.name ? saved.name.toLowerCase() : "";
-          const savedCountry = saved.country ? saved.country.toLowerCase() : "";
+          const savedName = saved.name?.toLowerCase() || "";
+          const savedCountry = saved.country?.toLowerCase() || "";
           return savedName === cityName && savedCountry === cityCountry;
         });
       })
@@ -64,17 +77,28 @@ export default function SearchList({
     });
   };
 
-  return isPending ? (
-    <ActivityIndicator size="large" color="#000" style={{ marginTop: 20 }} />
-  ) : error ? (
-    <View style={styles.messageContainer}>
-      <Text style={styles.errorText}>{error}</Text>
-    </View>
-  ) : !data || data.length === 0 ? (
-    <View style={styles.messageContainer}>
-      <Text style={styles.emptyText}>Brak wyników.</Text>
-    </View>
-  ) : (
+  // 🟢 EARLY RETURNS 🔥
+  if (isPending) {
+    return <LottiLoader />;
+  }
+
+  if (error) {
+    return (
+      <View style={styles.messageContainer}>
+        <Text style={styles.errorText}>{error}</Text>
+      </View>
+    );
+  }
+
+  if (!data || data.length === 0) {
+    return (
+      <View style={styles.messageContainer}>
+        <Text style={styles.emptyText}>no results</Text>
+      </View>
+    );
+  }
+
+  return (
     <FlatList
       data={uniqueData}
       keyExtractor={(item, index) => item.id?.toString() || item.name + index}
@@ -93,7 +117,7 @@ export default function SearchList({
             },
           ]}
         >
-          <Text style={[styles.cityText,{color:themeColors.textColor}]}>
+          <Text style={[styles.cityText, { color: themeColors.textColor }]}>
             {item.name}, {item.state}, {item.country}
           </Text>
         </Pressable>

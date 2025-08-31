@@ -19,6 +19,7 @@ export default function SunRAndSContainer({ data }) {
   const dayLength = sunset - sunrise;
   const timeSinceSunrise = now - sunrise;
   let progress = (timeSinceSunrise / dayLength) * 100;
+  progress = Math.max(0, Math.min(progress, 100));
 
   return (
     <View style={styles.container}>
@@ -36,7 +37,13 @@ export default function SunRAndSContainer({ data }) {
         <View
           style={[
             styles.dot,
-            { left: `${progress}%`, backgroundColor: themeColors.textColor },
+            {
+              left: `${progress}%`,
+              backgroundColor: themeColors.textColor,
+              transform: [
+                { translateX: progress <= 0 ? 0 : progress >= 100 ? -14 : -7 },
+              ],
+            },
           ]}
         />
       </View>

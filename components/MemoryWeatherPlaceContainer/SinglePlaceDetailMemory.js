@@ -1,9 +1,10 @@
 import { useLayoutEffect, useEffect } from "react";
-import {Keyboard, Text, View } from "react-native";
+import { Keyboard, Text, View } from "react-native";
 import Button from "../UI/Button";
 import { useSavedWeatherLocations } from "../../data/SavedWeatherLocationsContext";
 import SinglePlaceDataContainer from "../DataContainers/SinglePlaceDataContainer";
 import { useSettingsDataContext } from "../../data/SettingsContext";
+import IconButton from "../UI/IconButton";
 
 export default function SinglePlaceDetailMemory({ route, navigation }) {
   const { data } = route.params;

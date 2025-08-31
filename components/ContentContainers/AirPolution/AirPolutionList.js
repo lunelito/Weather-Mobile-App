@@ -1,4 +1,3 @@
-import React from "react";
 import useFetch from "../../../hooks/useFetch";
 import { View, Text, StyleSheet } from "react-native";
 import ComponentLevel from "./ComponentLevel";

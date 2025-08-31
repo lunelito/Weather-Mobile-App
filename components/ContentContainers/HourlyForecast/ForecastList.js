@@ -1,13 +1,7 @@
 import React from "react";
 import useFetch from "../../../hooks/useFetch";
 import { useState } from "react";
-import {
-  FlatList,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { FlatList, ScrollView, StyleSheet, Text, View } from "react-native";
 import Button from "../../UI/Button";
 import SingleForcastHour from "./SingleForcastHour";
 import { useNavigation } from "@react-navigation/native";
@@ -27,7 +21,7 @@ export default function ForecastList({ data }) {
     `https://pro.openweathermap.org/data/2.5/forecast/hourly?lat=${lat}&lon=${lon}&units=${units}&appid=4b697ed7a09995dacb97f44eb9978af3`
   );
 
-  const {themeColors} = useSettingsDataContext()
+  const { themeColors } = useSettingsDataContext();
 
   const navigation = useNavigation();
 

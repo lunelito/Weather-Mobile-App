@@ -4,7 +4,6 @@ import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSettingsDataContext } from "../../../data/SettingsContext";
 
 export default function UVContainer({ data }) {
-  console.log(data);
 
   const { themeColors } = useSettingsDataContext();
 

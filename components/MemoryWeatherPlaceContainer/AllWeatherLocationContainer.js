@@ -3,16 +3,28 @@ import SingleWeatherCard from "./SingleWeatherCard";
 import { useSavedWeatherLocations } from "../../data/SavedWeatherLocationsContext";
 import { useUserLocation } from "../../data/UserLocationWeather";
 import UserLocationCard from "../UserLocationContainers/UserLocationCard";
+import LottiLoader from "../UI/LottiLoader";
 
 export default function AllWeatherLocationContainer() {
   const { weatherLocations } = useSavedWeatherLocations();
   const { userLocation } = useUserLocation();
 
+  const isLoading =
+    !userLocation && (!weatherLocations || weatherLocations.length === 0);
+
+  if (isLoading) {
+    return (
+      <View style={styles.contentContainer}>
+        <LottiLoader speed={0.05} />
+      </View>
+    );
+  }
+
   return (
     <>
       <ScrollView>
         <View style={styles.contentContainer}>
-          <View s>
+          <View>
             {userLocation && (
               <UserLocationCard item={userLocation} index={"loc"} />
             )}
@@ -34,6 +46,6 @@ const styles = StyleSheet.create({
   contentContainer: {
     width: "100%",
     alignItems: "center",
-    justifyContent:"center"
+    justifyContent: "center",
   },
 });

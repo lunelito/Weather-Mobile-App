@@ -26,6 +26,7 @@ export default function SearchContainer({
               onPress={() => {
                 setIsFocused(false);
                 Keyboard.dismiss();
+                setQuery("")
               }}
             />
           </View>

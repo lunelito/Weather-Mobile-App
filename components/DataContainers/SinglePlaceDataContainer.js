@@ -20,9 +20,8 @@ import PressureContainer from "../ContentContainers/Pressure/PressureContainer";
 import UVContainer from "../ContentContainers/UVindex/UVContainer";
 import { useSettingsDataContext } from "../../data/SettingsContext";
 import IconButton from "../UI/IconButton";
-
-import LottieView from "lottie-react-native";
-import loaderAnimation from "../../assets/animations/loader.json";
+import LottiLoader from "../UI/LottiLoader";
+import DailyForcastList from "../ContentContainers/DailyForcast/DailyForcastList";
 
 export default function SinglePlaceDataContainer({
   data,
@@ -34,6 +33,7 @@ export default function SinglePlaceDataContainer({
   const { units, themeColors } = useSettingsDataContext();
 
   const urlOpenWeather = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=4b697ed7a09995dacb97f44eb9978af3&units=${units}`;
+
   const {
     data: openWeatherApi,
     isPending: openWeatherApiIsPending,
@@ -41,6 +41,7 @@ export default function SinglePlaceDataContainer({
   } = useFetch(urlOpenWeather);
 
   const urlMeteo = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=uv_index_max&hourly=surface_pressure,pressure_msl&timezone=Europe/Warsaw`;
+
   const {
     data: meteoApi,
     isPending: meteoIsPending,
@@ -62,10 +63,17 @@ export default function SinglePlaceDataContainer({
         headerTitle: "",
         headerTransparent: true,
         headerTintColor: themeColors.textColor,
-        headerLeft: () => null,
         headerRight: () => null,
+        headerLeft: () => (
+          <IconButton
+            color={themeColors.textColor}
+            icon="arrow-back-outline"
+            size={28}
+            onPress={() => navigation.goBack()}
+          />
+        ),
       });
-    } 
+    }
     if (!isPending && imageLoaded && weatherData) {
       navigation.setOptions({
         headerTitle: weatherData.name,
@@ -122,12 +130,7 @@ export default function SinglePlaceDataContainer({
         onLoad={() => setImageLoaded(true)}
       >
         <View style={styles.containerLoader}>
-          <LottieView
-            source={loaderAnimation}
-            autoPlay
-            loop
-            style={{ width: 600, height: 600 }}
-          />
+          <LottiLoader />
         </View>
       </ImageBackground>
     );
@@ -144,7 +147,7 @@ export default function SinglePlaceDataContainer({
         onScroll={(e) => setScrollY(e.nativeEvent.contentOffset.y)}
         scrollEventThrottle={16}
       >
-        <View style={styles.container}>
+        <View style={[styles.container, moreContentS && { paddingBottom: 50 }]}>
           <SingleDataGrayContainer x={2} y={2} title="Hourly forecast">
             <ForecastList data={data} />
           </SingleDataGrayContainer>
@@ -155,6 +158,10 @@ export default function SinglePlaceDataContainer({
 
           <SingleDataGrayContainer x={2} y={1} title="UV index">
             <UVContainer data={meteoData} />
+          </SingleDataGrayContainer>
+
+          <SingleDataGrayContainer x={2} y={3} title="Daily forecast">
+            <DailyForcastList data={data} />
           </SingleDataGrayContainer>
 
           <SingleDataGrayContainer x={1} y={1} title="Pressure">

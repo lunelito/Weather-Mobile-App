@@ -12,6 +12,7 @@ export const useSettingsDataContext = () => useContext(SettingsData);
 const darkTheme = {
   backgroundColor: "#111111",
   textColor: "#f5f5f5",
+  textColorSecondary: "#666",
   secondaryBackgroundColor: "#1a1a1a",
   containerColor: "rgba(0,0,0,0.8)",
   SkeletonLoaderText: "#444444",
@@ -21,6 +22,7 @@ const darkTheme = {
 const lightTheme = {
   backgroundColor: "#ffffff",
   textColor: "#111111",
+  textColorSecondary: "#666666",
   secondaryBackgroundColor: "#efefef",
   containerColor: "rgba(255, 255, 255, 0.8)",
   SkeletonLoaderText: "#e0e0e0",
@@ -36,8 +38,6 @@ export const SettingsProvider = ({ children }) => {
     const currentTheme = theme === "auto" ? systemTheme : theme;
     return currentTheme === "dark" ? darkTheme : lightTheme;
   }, [theme, systemTheme]);
-
-  console.log(systemTheme)
 
   useEffect(() => {
     const laodUserUnits = async () => {

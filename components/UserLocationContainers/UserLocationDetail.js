@@ -1,12 +1,16 @@
 import { useLayoutEffect } from "react";
-import { Button, View } from "react-native";
+import {  View } from "react-native";
 import SinglePlaceDataContainer from "../DataContainers/SinglePlaceDataContainer";
 import { useUserLocation } from "../../data/UserLocationWeather";
+import { useSettingsDataContext } from "../../data/SettingsContext";
+import Button from "../UI/Button";
 
 export default function UserLocationDetail({ route, navigation }) {
   const { data } = route.params;
 
   const { setUserLocation } = useUserLocation();
+
+  const {themeColors} = useSettingsDataContext()
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -29,7 +33,19 @@ export default function UserLocationDetail({ route, navigation }) {
 
   return (
     <View style={{ flex: 1 }}>
-      <SinglePlaceDataContainer data={data} deleteFromStorage={deleteFromStorage}/>
+      <SinglePlaceDataContainer
+        data={data}
+        moreContentM={
+          <View style={{ margin: 60 }}>
+            <Button
+              text={"Delete from memory"}
+              backgroundColor={themeColors.containerColor}
+              color={themeColors.textColor}
+              onPress={deleteFromStorage}
+            />
+          </View>
+        }
+      />
     </View>
   );
 }
