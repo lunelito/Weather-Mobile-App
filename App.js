@@ -23,6 +23,7 @@ import {
   SettingsProvider,
   useSettingsDataContext,
 } from "./data/SettingsContext";
+import MapContainer from "./components/Maps/MapContainer";
 
 const Stack = createNativeStackNavigator();
 
@@ -71,6 +72,11 @@ function AppContent() {
             <Stack.Screen
               component={SettingsContainer}
               name="SettingsContainer"
+              options={{ presentation: "fullScreenModal" }}
+            />
+            <Stack.Screen
+              component={MapContainer}
+              name="MapContainer"
               options={{ presentation: "fullScreenModal" }}
             />
           </Stack.Navigator>

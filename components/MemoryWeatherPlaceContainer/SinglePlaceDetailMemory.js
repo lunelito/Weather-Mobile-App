@@ -26,7 +26,22 @@ export default function SinglePlaceDetailMemory({ route, navigation }) {
       <SinglePlaceDataContainer
         data={data}
         moreContentM={
-          <View style={{ margin: 60 }}>
+          <View
+            style={{
+              margin: 60,
+              flexDirection: "col",
+              gap:20,
+              
+            }}
+          >
+            <Button
+              text={"Map"}
+              backgroundColor={themeColors.containerColor}
+              color={themeColors.textColor}
+              onPress={() => {
+                navigation.navigate("MapContainer", { data: data });
+              }}
+            />
             <Button
               text={"Delete from memory"}
               backgroundColor={themeColors.containerColor}

@@ -4,6 +4,7 @@ import {
   ImageBackground,
   StyleSheet,
   ScrollView,
+  Alert,
 } from "react-native";
 import useFetch from "../../hooks/useFetch";
 import { useLayoutEffect, useState } from "react";
@@ -22,6 +23,8 @@ import { useSettingsDataContext } from "../../data/SettingsContext";
 import IconButton from "../UI/IconButton";
 import LottiLoader from "../UI/LottiLoader";
 import DailyForcastList from "../ContentContainers/DailyForcast/DailyForcastList";
+import Button from "../UI/Button";
+import AlertContainer from "../ContentContainers/Alerts/AlertContainer";
 
 export default function SinglePlaceDataContainer({
   data,
@@ -148,6 +151,7 @@ export default function SinglePlaceDataContainer({
         scrollEventThrottle={16}
       >
         <View style={[styles.container, moreContentS && { paddingBottom: 50 }]}>
+
           <SingleDataGrayContainer x={2} y={2} title="Hourly forecast">
             <ForecastList data={data} />
           </SingleDataGrayContainer>
@@ -164,6 +168,10 @@ export default function SinglePlaceDataContainer({
             <DailyForcastList data={data} />
           </SingleDataGrayContainer>
 
+          <SingleDataGrayContainer x={2} y={2} title="Alerts">
+            <AlertContainer data={data} />
+          </SingleDataGrayContainer>
+          
           <SingleDataGrayContainer x={1} y={1} title="Pressure">
             <PressureContainer data={meteoData} />
           </SingleDataGrayContainer>
