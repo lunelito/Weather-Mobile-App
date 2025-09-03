@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Paper Weather",
-    "slug": "Paper Weather",
+    "slug": "paper-weather",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/paper_plane_adaptive_icon.png",
@@ -13,17 +13,27 @@
       "backgroundColor": "#1b263b"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.lunel.paperweather",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/paper_plane_adaptive_icon.png",
         "backgroundColor": "#1b263b"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.lunel.paperweather"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "9b1f6d0f-aff2-46a2-b3c1-b662c8a0c054"
+      }
     }
   }
 }
